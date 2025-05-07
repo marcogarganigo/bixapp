@@ -1,15 +1,16 @@
 import React, { useMemo, useState, useEffect, useContext } from 'react';
-import {useRecordsStore} from './records/recordsStore';
+import {useRecordsStore} from '@/utils/stores/recordsStore';
 import QuickFilters from './quickFilters';
-import TableFilters from './TableFilters';
-import RecordTabs from './recordTabs';
-import RecordCard from './recordCard';
+//import TableFilters from './TableFilters';
+//import RecordTabs from './recordTabs';
+//import RecordCard from './recordCard';
 import GenericComponent from './genericComponent';
 import { PlusIcon, ArrowPathIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
 import { Table } from 'lucide-react';
 import { toast, Toaster } from 'sonner';
 import { AppContext } from '@/context/appContext';
+import CardsList from './record/cardsList';
 
 
 // INTERFACCIA PROPS
@@ -29,6 +30,9 @@ export default function StandardContent({ tableid }: PropsInterface) {
   const {cardsList, addCard, removeCard, resetCardsList, handleRowClick} = useRecordsStore(); // Stato per il valore di ricerca
   
   const {activeServer } = useContext(AppContext);
+
+  const {searchTerm, tableView, currentPage, pageLimit } = useRecordsStore();
+
   
 
   
@@ -104,6 +108,7 @@ export default function StandardContent({ tableid }: PropsInterface) {
             {activeServer !== 'belotti' && (
               <>
             <div className="relative">
+              {/* Dropdown menu 
             <button 
               className="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 
                         font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center 
@@ -138,30 +143,31 @@ export default function StandardContent({ tableid }: PropsInterface) {
                 </ul>
               </div>
             )}
+              */}
           </div>
+          
 
                 <button
                   type="button"
-                  className="font-bold inline-flex items-center px-5 py-2.5 text-sm text-white bg-primary rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-100 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  className="font-bold inline-flex items-center px-2 py-1.5 text-xs  text-white bg-red-500 rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-100 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                   onClick={() => handleRowClick('', "", tableid)}
                 >
-                  <PlusIcon className="w-5 h-5 mr-2" />
-                  Nuovo
+                  <PlusIcon className="w-5 h-5" />
                 </button>
                 <button
                   type="button"
-                  className="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                  className="inline-flex items-center px-2 py-1.5 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
                   onClick={refreshTableFunc}
                 >
-                  <ArrowPathIcon className="w-5 h-5 mr-2" />
-                  Ricarica
+                  <ArrowPathIcon className="w-4 h-4 " />
+                  
                 </button>
                 <button
                   type="button"
-                  className="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                  className="inline-flex items-center px-2 py-1.5 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
                 >
-                  <ArrowDownTrayIcon className="w-5 h-5 mr-2" />
-                  Esporta
+                  <ArrowDownTrayIcon className="w-4 h-4" />
+                  
                 </button>
                 </>
           )}
@@ -169,7 +175,7 @@ export default function StandardContent({ tableid }: PropsInterface) {
           </div>
 
           
-
+{/*
     {cardsList.map((card, index) => (
       <RecordCard 
         key={`${card.tableid}-${card.recordid}`}
@@ -182,19 +188,27 @@ export default function StandardContent({ tableid }: PropsInterface) {
         type={card.type}
       />
     ))}
-
+*/}
       <div className="w-full h-full flex gap-4 mb-4">
+      {/*
       {isFiltersOpen && (
 
       <div className="w-1/4 h-full flex flex-nowrap overflow-x-auto overflow-y-hidden border border-gray-200 p-2">
           <TableFilters tableid={tableid} ></TableFilters>
       </div>
         )}
+      */}
 
       <div className="w-full h-full flex flex-nowrap overflow-x-auto overflow-y-hidden p-2">
 
-          <div className="w-full h-full"><RecordTabs tableid={tableid}></RecordTabs></div>
-          </div>
+          {/*<div className="w-full h-full"><RecordTabs tableid={tableid}></RecordTabs></div>*/}
+          <div className="w-full h-full">
+            <CardsList 
+              tableid={tableid}
+              searchTerm={searchTerm}
+              view={tableView}
+              pagination={{ page: currentPage, limit: pageLimit }}></CardsList></div>
+            </div>
           </div>
   
         </div>

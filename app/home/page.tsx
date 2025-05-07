@@ -7,7 +7,7 @@ import { Toaster, toast } from 'sonner';
 import Navbar from '@/components/nav/navbar';
 import { getCsrfToken } from '@/utils/auth';
 import SidebarMenu from '@/components/nav/sidebar';
-//import StandardContent from '@/components/standardContent';
+import StandardContent from '@/components/standardContent';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
 //import Dashboard from '@/components/dashboard';
 import { set } from 'lodash';
@@ -50,9 +50,9 @@ export default function Home() {
 
         <div className="flex-1 bg-gray-100 p-4 h-5/6">
           
-            {/*
+            
             <StandardContent tableid={selectedMenu} />
-            */}
+            
           
         </div>
       </div>
