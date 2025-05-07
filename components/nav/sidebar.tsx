@@ -1,0 +1,263 @@
+import React, { useMemo, useContext, useState, useEffect } from 'react';
+import Image from 'next/image';
+import { useApi } from '@/utils/useApi';
+import GenericComponent from '../genericComponent';
+import { AppContext } from '@/context/appContext';
+import { Home, Package, Mail, ChevronDown, ChevronUp, HelpCircle, Menu, X, LucideIcon } from 'lucide-react';
+import { useRecordsStore } from '@/utils/stores/recordsStore';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+// FLAG PER LO SVILUPPO
+const isDev = false;
+
+// INTERFACCE
+interface PropsInterface {
+}
+
+interface ResponseInterface {
+    menuItems: Record<string, MenuItem>;
+    otherItems: SubItem[];
+}
+
+interface SubItem{
+    id: string;
+    title: string;
+    href: string;
+}
+
+interface MenuItem {
+    id: string;
+    title: string;
+    icon: string;
+    href?: string;
+    subItems?: SubItem[];
+}
+
+// Mappa delle icone
+const iconMap: Record<string, LucideIcon> = {
+    'Home': Home,
+    'Package': Package,
+    'Mail': Mail,
+};
+
+export default function SidebarMenu({  }: PropsInterface) {
+    // DATI
+    const devPropExampleValue = isDev ? "" : "";
+
+    // DATI RESPONSE DI DEFAULT
+    const responseDataDEFAULT: ResponseInterface = {
+        menuItems: {},
+        otherItems: []
+    };
+
+    // DATI RESPONSE PER LO SVILUPPO 
+    const responseDataDEV: ResponseInterface = {
+        menuItems: {
+            home: {
+                id: "home",
+                title: "Home",
+                icon: "Home",
+                href: "#",
+                subItems: [],
+            },
+            prodotti: {
+                id: "prodotti",
+                title: "Prodotti",
+                icon: "Package",
+                subItems: [
+                    { id: "cat1", title: "Categoria 1", href: "#" },
+                    { id: "cat2", title: "Categoria 2", href: "#" },
+                    { id: "cat3", title: "Categoria 3", href: "#" },
+                    { id: "cat4", title: "Categoria 4", href: "#" },
+                ],
+            },
+            contatti: {
+                id: "contatti",
+                title: "Contatti",
+                icon: "Mail",
+                href: "#",
+                subItems: [],
+            },
+        },
+        otherItems: []
+    };
+
+    //DATI DEL COMPONENTE
+    const [openDropdown, setOpenDropdown] = useState('');
+    const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const {setSelectedMenu, selectedMenu} = useRecordsStore();
+
+    // DATI DEL CONTESTO
+    const { user, activeServer } = useContext(AppContext);
+
+    //FUNZIONI DEL COMPONENTE
+    const handleMouseEnter = (section: string) => {
+        setActiveTooltip(section);
+    };
+
+    const handleMouseLeave = () => {
+        setActiveTooltip(null);
+    };
+
+    const handleMenuClick = (item: string) => {
+        setSelectedMenu(item);
+        // Close sidebar after selection on mobile
+        setIsSidebarOpen(false);
+    };
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
+
+    // IMPOSTAZIONE DELLA RESPONSE
+    const [responseData, setResponseData] = useState<ResponseInterface>(isDev ? responseDataDEV : responseDataDEFAULT);
+
+    const payload = useMemo(() => {
+        if (isDev) return null;
+        return {
+            apiRoute: 'get_sidebarmenu_items',
+        };
+    }, []); // Dipendenza vuota: viene eseguito solo al primo rendering
+    
+    // CHIAMATA AL BACKEND (solo se non in sviluppo)
+    const { response, loading, error, elapsedTime  } = !isDev && payload ? useApi<ResponseInterface>(payload) : { response: null, loading: false, error: null, elapsedTime: null };
+
+    // AGGIORNAMENTO RESPONSE CON I DATI DEL BACKEND (solo se non in sviluppo)
+    useEffect(() => {
+        if (!isDev && response && JSON.stringify(response) !== JSON.stringify(responseData)) {
+            setResponseData(response);
+        }
+    }, [response, responseData]);
+
+    return (
+        <GenericComponent response={responseData} loading={loading} error={error} title="SidebarMenu" elapsedTime={elapsedTime}> 
+            {(data) => (
+                <>
+                    {/* Toggle Button - Always visible */}
+                    <button 
+                        onClick={toggleSidebar} 
+                        className="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md shadow-lg hover:bg-gray-700 transition-all duration-300 sm:block lg:hidden 2xl:hidden xl:hidden cursor-pointer"
+                        aria-label="Toggle menu"
+                    >
+                        <div className="relative w-6 h-6">
+                            <Menu 
+                                size={24} 
+                                className={`absolute top-0 left-0 transition-all duration-300 ${isSidebarOpen ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`} 
+                            />
+                            <X 
+                                size={24} 
+                                className={`absolute top-0 left-0 transition-all duration-300 ${isSidebarOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-0'}`} 
+                            />
+                        </div>
+                    </button>
+
+                    {/* Overlay for closing sidebar when clicking outside (mobile only) */}
+                    {isSidebarOpen && (
+                        <div 
+                            className="fixed inset-0 bg-transparent bg-opacity-50 z-40 lg:hidden"
+                            onClick={() => setIsSidebarOpen(false)}
+                        />
+                    )}
+
+                    {/* Sidebar */}
+                    <div 
+                        id="sidebar" 
+                        className={`fixed top-0 left-0 bg-black text-white h-full w-64 transition-all duration-300 rounded-r-xl shadow-lg z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
+                    >
+                        <div className="py-6 px-4">
+                            <Image 
+                                src={`/imgs/bixdata.png`}
+                                alt={activeServer ?? ''}
+                                width={1000}
+                                height={1000}
+                                className="h-16 w-auto m-auto hover:cursor-pointer hover:scale-105 hover:translate-y-1 transition-all ease-in-out duration-150"
+                                onClick={() => window.location.reload()}
+                            />
+                        </div>
+
+                        <ul className="list-none p-0 m-0">
+                            {activeServer === 'telamico' && (
+                                <>
+                                    <li className="px-4 py-2">
+                                        <span className="block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors cursor-pointer" onClick={() => handleMenuClick('TelAmicoCalendario')}> 
+                                            Calendario TelAmico
+                                        </span>
+                                    </li>
+                                    <li className="px-4 py-2">
+                                        <span className="block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors cursor-pointer" onClick={() => handleMenuClick('TelAmicoAgenda')}> 
+                                            Agenda TelAmico
+                                        </span>
+                                    </li>
+                                    <li className="px-4 py-2">
+                                        <span className="block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors cursor-pointer" onClick={() => handleMenuClick('Calendario')}> 
+                                            Agenda TelAmico
+                                        </span>
+                                    </li>
+                                </>
+                            )}
+
+                            {activeServer === 'belotti' && responseData.otherItems.map((item) => (
+                                <li key={item.id} className="px-4 py-2">
+                                    <span className="block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors cursor-pointer" onClick={() => handleMenuClick(item.id)}> 
+                                        {item.title}
+                                    </span>
+                                </li>
+                            ))}
+
+                            {Object.entries(data['menuItems']).map(([key, item]) => {
+                                const Icon = iconMap[item.icon] || HelpCircle;
+                                return (
+                                    <li key={item.id} className="px-4 py-2">
+                                        {item.subItems ? (
+                                            // Dropdown section
+                                            <div>
+                                                <button 
+                                                    onClick={() => setOpenDropdown(openDropdown === item.id ? '' : item.id)} 
+                                                    className="w-full text-md flex items-center justify-between px-6 py-2 hover:bg-gray-700 rounded-md transition-colors"
+                                                >
+                                                    <div className="flex items-center">
+                                                        <Icon className="w-5 h-5" />
+                                                        <span className="text-md ml-3">{item.title}</span>
+                                                    </div>
+                                                    <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${openDropdown === item.id ? '-rotate-180' : ''}`} />
+                                                </button>
+
+                                                {/* Dropdown menu */}
+                                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openDropdown === item.id ? 'max-h-96' : 'max-h-0'}`}>
+                                                    <ul className="py-1 ml-6">
+                                                        {item.subItems.map((subItem) => (
+                                                            <li key={subItem.id} className='cursor-pointer'>
+                                                                <span 
+                                                                    className="text-gray-200 text-sm block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors ml-2" 
+                                                                    onClick={() => handleMenuClick(subItem.id)}
+                                                                >
+                                                                    {subItem.title}
+                                                                </span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            // Regular link section
+                                            <a 
+                                                href={item.href} 
+                                                className="flex items-center px-6 py-2 hover:bg-gray-700 rounded-md transition-colors"
+                                                onClick={() => item.id && handleMenuClick(item.id)}
+                                            >
+                                                <Icon className="w-5 h-5" />
+                                                <span className="ml-3">{item.title}</span>
+                                            </a>
+                                        )}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                </>
+            )}
+        </GenericComponent>
+    );
+}
