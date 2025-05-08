@@ -112,15 +112,10 @@ export default function CardTabs({ tableid,recordid,mastertableid, masterrecordi
               
             </ul>
           </div>
-              {/*
-              <CardFields tableid={tableid} recordid={recordid}  mastertableid={mastertableid} masterrecordid={masterrecordid}/>
-              */}
+                            
           <div className="h-5/6 p-4">
             {activeTab === 'Campi' && (
-
-              <>
-              <p>ciao</p>
-              </>
+              <CardFields tableid={tableid} recordid={recordid}  mastertableid={mastertableid} masterrecordid={masterrecordid}/>
             )}
             {activeTab === 'Collegati' && (
               <CardLinked tableid={tableid} recordid={recordid} />

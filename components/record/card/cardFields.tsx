@@ -1,22 +1,22 @@
 import React, { useMemo, useContext, useState, useEffect } from 'react';
 import { useApi } from '@/utils/useApi';
-import GenericComponent from './genericComponent';
+import GenericComponent from '../../genericComponent';
 import { AppContext } from '@/context/appContext';
-import InputWord from './inputWord';
-import InputNumber from './inputNumber';
-import InputDate from './inputDate';
-import InputMemo from './inputMemo';
-import InputCheckbox from './inputCheckbox';
-import SelectUser from './selectUser';
-import SelectStandard from './selectStandard';
-import InputLinked from './inputLinked';
-import InputEditor from './inputEditor';
-import InputFile from './inputFile';
+import InputWord from '@/components/customUI/inputWord';
+import InputNumber from '@/components/customUI/inputNumber';
+import InputDate from '@/components/customUI/inputDate';
+import InputMemo from '@/components/customUI/inputMemo';
+import InputCheckbox from '@/components/customUI/inputCheckbox';
+import SelectUser from '@/components/customUI/selectUser';
+import SelectStandard from '@/components/customUI/selectStandard';
+import InputLinked from '@/components/customUI/inputLinked';
+import InputEditor from '@/components/customUI/inputEditor';
+import InputFile from '@/components/customUI/inputFile';
 import { forEach, update } from 'lodash';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'sonner';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
-import { useRecordsStore } from './records/recordsStore';
+import { useRecordsStore } from '@/utils/stores/recordsStore';
 import { Tooltip } from 'react-tooltip';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -380,18 +380,9 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                             );
                         })}
                     </div>
-                    {activeServer === 'belotti' && (
-                        <button type="button" onClick={handleSave} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 me-2 mt-4">
-                            Conferma merce ricevuta
-                        </button>
-                    )}
-                    {activeServer !== 'belotti' && (
-                        <button type="button" onClick={handleSave} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 me-2 mt-4">
+                    <button type="button" onClick={handleSave} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 me-2 mt-4">
                             Salva
-                        </button>
-                    )}
-                   
-                                  
+                    </button>         
                 </div>
             )}
         </GenericComponent>

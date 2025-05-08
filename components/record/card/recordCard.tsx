@@ -162,7 +162,7 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
       }}
     >
       {showInfoPopup && (
-        <div className="absolute top-5 left-5 z-50 bg-white border border-gray-300 rounded-lg shadow-lg p-4 w-72">
+        <div className="absolute top-5 left-5 z-20 bg-white border border-gray-300 rounded-lg shadow-lg p-4 w-72">
           <h3 className="text-lg font-semibold mb-2">Info record</h3>
           <ul className="text-sm text-gray-700">
             <li><strong>Table ID:</strong> {tableid}</li>
@@ -212,7 +212,7 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
                   </button>
 
                   {showDropdown && (
-                    <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded shadow-lg z-50">
+                    <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded shadow-lg z-30">
                       <ul className="py-1">
                         {tableid === 'bollettini' && (
                           <li 

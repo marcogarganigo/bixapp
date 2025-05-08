@@ -6,7 +6,7 @@ import { AppContext } from '@/context/appContext';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // FLAG PER LO SVILUPPO
-const isDev = false;
+const isDev = true;
 
 // INTERFACCE
 interface PropsInterface {
