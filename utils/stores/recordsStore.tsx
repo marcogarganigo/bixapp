@@ -88,8 +88,9 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
 
         if (tableType === 'standard') {
             // Rimuovi tutte le card dalla lista
-            await resetCardsList();
-
+            if (get().cardsList.length > 0) {
+                await resetCardsList();
+            }
             // Aggiungi la nuova card
             addCard(tableid, recordid, tableType);
         } else {

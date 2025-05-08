@@ -299,9 +299,14 @@ export default function CardsList({ tableid, searchTerm, filters, view, order, c
                             <div 
                                 key={row.recordid} 
                                 className="bg-white p-5 dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden"
-                                onClick={() => handleRowClick && tableid && context && handleRowClick(context, row.recordid, tableid, masterTableid, masterRecordid)}
                             >
-                                <Maximize2 className="text-white float-end"/>
+                                <button
+                                    type ="button"
+                                    onClick={() => handleRowClick && tableid && context && handleRowClick(context, row.recordid, tableid, masterTableid, masterRecordid)}
+                                    className="w-min h-full float-end hover:cursor-pointer hover:scale-105">
+                                    <Maximize2 className="text-white"/>
+                                </button>
+
                                 <div className="p-4 space-y-2">
                                 {row.fields.map((field, index) => {
                                     // Usa la descrizione della colonna come etichetta per il campo
@@ -314,14 +319,6 @@ export default function CardsList({ tableid, searchTerm, filters, view, order, c
                                     </div>
                                     );
                                 })}
-                                </div>
-                                <div className="bg-gray-50 dark:bg-gray-700/50 px-4 py-2 flex justify-end">
-                                <button className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
-                                    <span>Dettagli</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
                                 </div>
                             </div>
                             ))}

@@ -3,7 +3,7 @@ import {useRecordsStore} from '@/utils/stores/recordsStore';
 import QuickFilters from './quickFilters';
 //import TableFilters from './TableFilters';
 //import RecordTabs from './recordTabs';
-//import RecordCard from './recordCard';
+import RecordCard from './record/card/recordCard';
 import GenericComponent from './genericComponent';
 import { PlusIcon, ArrowPathIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
@@ -100,7 +100,19 @@ export default function StandardContent({ tableid }: PropsInterface) {
           <h2>Contenuto</h2>
           <p>Hai selezionato: <strong>{tableid}</strong></p>
           */}
-          <div className="flex flex-wrap w-full mb-2">
+              {cardsList.map((card, index) => (
+                <RecordCard 
+                  key={`${card.tableid}-${card.recordid}`}
+                  tableid={card.tableid} 
+                  recordid={card.recordid}
+                  mastertableid={card.mastertableid}
+                  masterrecordid={card.masterrecordid}
+                  index={index}
+                  total={cardsList.length}
+                  type={card.type}
+                />
+              ))}
+          <div className="flex flex-wrap h-min w-full mb-2">
             <div className="w-1/2">
                 <QuickFilters></QuickFilters>
             </div>
@@ -175,21 +187,10 @@ export default function StandardContent({ tableid }: PropsInterface) {
           </div>
 
           
-{/*
-    {cardsList.map((card, index) => (
-      <RecordCard 
-        key={`${card.tableid}-${card.recordid}`}
-        tableid={card.tableid} 
-        recordid={card.recordid}
-        mastertableid={card.mastertableid}
-        masterrecordid={card.masterrecordid}
-        index={index}
-        total={cardsList.length}
-        type={card.type}
-      />
-    ))}
-*/}
-      <div className="w-full h-full flex gap-4 mb-4">
+
+
+
+      <div className="w-full h-5/6 flex gap-4 mb-4">
       {/*
       {isFiltersOpen && (
 
@@ -203,11 +204,13 @@ export default function StandardContent({ tableid }: PropsInterface) {
 
           {/*<div className="w-full h-full"><RecordTabs tableid={tableid}></RecordTabs></div>*/}
           <div className="w-full h-full">
-            <CardsList 
+            <CardsList
               tableid={tableid}
               searchTerm={searchTerm}
               view={tableView}
-              pagination={{ page: currentPage, limit: pageLimit }}></CardsList></div>
+              pagination={{ page: currentPage, limit: pageLimit }}
+              context='standard'
+              ></CardsList></div>
             </div>
           </div>
   

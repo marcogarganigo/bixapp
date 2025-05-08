@@ -118,6 +118,44 @@ body {
   transform: translateZ(0);
 }
 
+
+/*MOBILE ANIMATIONS*/
+@keyframes mobileSlideOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes mobileSlideIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+.animate-mobile-slide-in {
+  animation: mobileSlideIn 0.25s ease-out forwards;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.animate-mobile-slide-out {
+  animation: mobileSlideOut 0.25s ease-in forwards;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+
 /*CUSTOM SCROLLBAR*/
 ::-webkit-scrollbar {
   width: 8px;
