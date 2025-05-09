@@ -150,13 +150,13 @@ export default function inputLinked({ initialValue='',onChange,linkedmaster_tabl
             onFocus={handleFocus}
             autoComplete='off'
             placeholder="Inserisci un valore"
-            className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
+            className="block min-w-0 grow py-1.5 pl-1 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 "
           />
       </div>
       </div>
       
       {isOpen && (
-        <div className="absolute w-full z-10 bg-white mt-1 border border-gray-300 rounded-md shadow-lg text-xs">
+        <div className="absolute w-full z-10 bg-white mt-1 border border-gray-300 rounded-md shadow-lg text-sm">
           {loading ? (
             <div className="flex items-center justify-center p-4 text-gray-500">
               <Loader2 className="animate-spin mr-2" size={20} />

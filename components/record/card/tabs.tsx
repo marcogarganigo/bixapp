@@ -3,10 +3,9 @@ import { useApi } from '@/utils/useApi';
 import GenericComponent from '../../genericComponent';
 import { AppContext } from '@/context/appContext';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
-import CardFields from './cardFields';
-import CardLinked from './cardLinked';
-//import RecordAttachments from './recordAttachments';
-//import RecordAttachmentsDemo from './recordAttachmentsDemo';
+import CardFields from './fields';
+import CardLinked from './linked';
+
 import { set } from 'lodash';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -81,20 +80,6 @@ export default function CardTabs({ tableid,recordid,mastertableid, masterrecordi
           <div className="h-full">
           <div className="h-min text-sm font-medium text-center text-gray-500 border-gray-200 dark:text-gray-400 dark:border-gray-700">
             <ul className="flex flex-wrap -mb-px relative">
-              {/*
-              <li className="me-2">
-                <button
-                  className={`inline-block p-4 border-b-2 rounded-t-lg transition-all duration-300 ${
-                    activeTab === 'AttachmentsDemo'
-                      ? 'text-primary border-primary'
-                      : 'text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300'
-                  }`}
-                  onClick={() => setActiveTab('AttachmentsDemo')}
-                >
-                  AllegatiDemo
-                </button>
-              </li>
-              */}
               {responseData.cardTabs.map((tab, index) => (
                 <li key={index} className="me-2">
                   <button
@@ -109,10 +94,8 @@ export default function CardTabs({ tableid,recordid,mastertableid, masterrecordi
                   </button>
                 </li>
               ))}
-              
             </ul>
-          </div>
-                            
+          </div>            
           <div className="h-5/6 p-4">
             {activeTab === 'Campi' && (
               <CardFields tableid={tableid} recordid={recordid}  mastertableid={mastertableid} masterrecordid={masterrecordid}/>
@@ -120,10 +103,6 @@ export default function CardTabs({ tableid,recordid,mastertableid, masterrecordi
             {activeTab === 'Collegati' && (
               <CardLinked tableid={tableid} recordid={recordid} />
             )}
-            {activeTab !== 'Campi' && activeTab !== 'Collegati' && activeTab !== 'Allegati' && activeTab !== 'AttachmentsDemo' && (
-              <div className="text-gray-400 italic">Nessun contenuto da mostrare</div>
-            )}
-            
           </div>
         </div>
       )}

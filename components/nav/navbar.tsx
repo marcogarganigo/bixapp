@@ -128,18 +128,6 @@ export default function NavBar() {
                                     <a
                                         href="#"
                                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                                        onClick={() => setSelectedMenu('userSettings')}
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <Settings className="w-4 h-4" />
-                                            <span>Settings</span>
-                                        </div>
-                                    </a>
-                                </MenuItem>
-                                <MenuItem>
-                                    <a
-                                        href="#"
-                                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                                         //change route to change-password
                                         onClick={() => router.push('/change-password')}
                                     >

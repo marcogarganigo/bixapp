@@ -138,7 +138,7 @@ export default function SidebarMenu({  }: PropsInterface) {
                     {/* Toggle Button - Always visible */}
                     <button 
                         onClick={toggleSidebar} 
-                        className="fixed top-4 left-4 z-110 p-2 bg-gray-800 text-white rounded-md shadow-lg hover:bg-gray-700 transition-all duration-300 sm:block lg:hidden 2xl:hidden xl:hidden cursor-pointer"
+                        className="fixed top-4 left-4 z-110 p-2 bg-black text-white rounded-md shadow-lg hover:bg-gray-700 transition-all duration-300 sm:block cursor-pointer"
                         aria-label="Toggle menu"
                     >
                         <div className="relative w-6 h-6">
@@ -163,7 +163,7 @@ export default function SidebarMenu({  }: PropsInterface) {
 
                     <div 
                         id="sidebar" 
-                        className={`overflow-auto fixed top-0 left-0 bg-black text-white h-full w-64 transition-all duration-300 rounded-r-xl shadow-lg z-100 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
+                        className={`overflow-auto fixed top-0 left-0 bg-black text-white h-full w-64 transition-all duration-300 rounded-r-xl shadow-lg z-100 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
                     >
                         <div className="py-6 px-4">
                             <Image 

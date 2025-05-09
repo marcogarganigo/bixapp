@@ -3,7 +3,7 @@ import { useApi } from '@/utils/useApi';
 import GenericComponent from '../../genericComponent';
 import { AppContext } from '@/context/appContext';
 import { ChevronDown, SquarePlus } from 'lucide-react';
-//import RecordsTable from './recordsTable';
+import CardsList from '@/components/record/cardsList';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // FLAG PER LO SVILUPPO
@@ -131,18 +131,18 @@ export default function CardLinked({ tableid,recordid }: PropsInterface) {
                                     <SquarePlus name="Plus" className="mr-2" /> 
                                     Aggiungi    
                                 </button>
-{/*}
-                                <RecordsTable
-                                    tableid={table.tableid}
-                                    searchTerm={''}
-                                    context="linked"
-                                    pagination={{ page: 1, limit: 10 }}
-                                    masterTableid={tableid}
-                                    masterRecordid={recordid}
-
-                                />
-                                */}
+                                
+                                <div className="h-11/12">
+                                    <CardsList
+                                        tableid={table.tableid}
+                                        searchTerm={''}
+                                        context="linked"
+                                        pagination={{ page: 1, limit: 10 }}
+                                        masterTableid={tableid}
+                                        masterRecordid={recordid}
+                                    />
                                 </div>
+                            </div>
                         </React.Fragment>
                     
                     ))}

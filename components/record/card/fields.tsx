@@ -17,7 +17,6 @@ import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'sonner';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
-import { Tooltip } from 'react-tooltip';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // FLAG PER LO SVILUPPO
@@ -286,11 +285,8 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
     return (
         <GenericComponent response={responseData} loading={loading} error={error} title="CardFields">
             {(response: ResponseInterface) => (
-                <div className="h-11/12">
-                    <Tooltip id="my-tooltip" className="tooltip" />
-                    {/* Form con select e search */}
+                <div className="h-full">
                     <div className="h-full flex flex-col overflow-y-scroll overflow-x-hidden space-y-3">
-
                         {response.fields.map(field => {
                             const rawValue = typeof field.value === 'object' ? field.value?.value : field.value;
                             const initialValue = rawValue ?? '';
@@ -300,15 +296,11 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                                 <div key={`${field.fieldid}-container`} className="flex items-center space-x-4 w-full">
                                     {/* Etichetta */}
                                     <div className="w-1/4 text-xs">
-                                        <p
-                                          data-tooltip-id="my-tooltip"
-                                          data-tooltip-content={field.fieldid}
-                                          data-tooltip-place="left"
-                                        className="text-black">{field.description} 
+                                        <p className="text-black">
+                                            {field.description} 
                                         </p>
                                     </div>
-                                    
-                                    {/* Input */}
+                                                                    
                                     <div className="w-3/4 text-xs mb-2">
                                         {field.fieldtype === 'Parola' ? (
                                             <InputWord
@@ -380,8 +372,8 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                             );
                         })}
                     </div>
-                    <div className="h-1/12">
-                        <button type="button" onClick={handleSave} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 me-2 mt-4 h-min text-sm">
+                    <div className="h-min">
+                        <button type="button" onClick={handleSave} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 me-2 mt-4 h-min xs:mb-2">
                                 Salva
                         </button>
                     </div>

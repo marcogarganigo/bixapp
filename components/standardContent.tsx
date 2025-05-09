@@ -3,7 +3,7 @@ import {useRecordsStore} from '@/utils/stores/recordsStore';
 import QuickFilters from './quickFilters';
 //import TableFilters from './TableFilters';
 //import RecordTabs from './recordTabs';
-import RecordCard from './record/card/recordCard';
+import RecordCard from './record/card/mainBody';
 import GenericComponent from './genericComponent';
 import { PlusIcon, ArrowPathIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
@@ -72,26 +72,6 @@ export default function StandardContent({ tableid }: PropsInterface) {
     }
   }, [recordid]);
 
-  const exportExcel = async () => {
-    try {
-      const response = await axiosInstanceClient.post(
-        "/postApi",
-        {
-          apiRoute: "export_excel",
-          tableid: tableid,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      // Gestisci la risposta qui, ad esempio, scarica il file Excel
-    } catch (error) {
-      console.error("Errore durante l'esportazione in Excel", error);
-    }
-  }
-
   return (
     <GenericComponent title="standardContent"> 
       {(data) => (
@@ -113,11 +93,10 @@ export default function StandardContent({ tableid }: PropsInterface) {
                 />
               ))}
           <div className="flex flex-wrap h-min w-full mb-2">
-            <div className="w-1/2">
+            <div className="w-2/3">
                 <QuickFilters></QuickFilters>
             </div>
-            <div className="w-1/2 h-1/2 flex justify-end gap-3">
-            {activeServer !== 'belotti' && (
+            <div className="w-1/3 h-1/2 flex justify-end gap-3">
               <>
             <div className="relative">
               {/* Dropdown menu 
@@ -161,28 +140,20 @@ export default function StandardContent({ tableid }: PropsInterface) {
 
                 <button
                   type="button"
-                  className="font-bold inline-flex items-center px-2 py-1.5 text-xs  text-white bg-red-500 rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-100 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  className="font-bold inline-flex items-center px-2 py-1.5 text-xs  text-white bg-red-500 rounded-lg hover:bg-red-500 transition-all duration-100 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                   onClick={() => handleRowClick('', "", tableid)}
                 >
                   <PlusIcon className="w-5 h-5" />
                 </button>
                 <button
                   type="button"
-                  className="inline-flex items-center px-2 py-1.5 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                  className="inline-flex items-center px-2 py-1.5 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
                   onClick={refreshTableFunc}
                 >
                   <ArrowPathIcon className="w-4 h-4 " />
                   
                 </button>
-                <button
-                  type="button"
-                  className="inline-flex items-center px-2 py-1.5 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
-                >
-                  <ArrowDownTrayIcon className="w-4 h-4" />
-                  
-                </button>
                 </>
-          )}
             </div>
           </div>
 

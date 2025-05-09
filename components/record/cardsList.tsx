@@ -299,7 +299,7 @@ export default function CardsList({ tableid, searchTerm, filters, view, order, c
                                                             {columnLabel}
                                                         </span>
                                                         <span className="text-sm text-gray-800 dark:text-gray-200">
-                                                            {field.value}
+                                                            {field.value === null ? '-' : field.value === '' ? '-' : field.value}
                                                         </span>
                                                     </div>
                                                 );

@@ -19,8 +19,8 @@ export default function InputEditor({ initialValue='', onChange }: PropsInterfac
       // Inizializza l'editor solo se non è già stato creato
       editorRef.current = new Editor({
         el: containerRef.current as HTMLElement,
-        height: '200px',
-        width: '100%',
+        height: 'auto',
+        width: 'auto',
         initialEditType: 'wysiwyg',
         previewStyle: 'vertical',
         initialValue: '',

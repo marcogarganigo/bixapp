@@ -1,14 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import axiosInstance from '@/utils/axiosInstance';
+import { useRouter } from 'next/navigation';
 import { toast, Toaster } from 'sonner';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import LoadingComp from '@/components/loading';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
+import Image from 'next/image';
 
 const ChangePasswordForm = () => {
   const [oldPassword, setOldPassword] = useState('');
@@ -24,7 +21,6 @@ const ChangePasswordForm = () => {
     setError('');
     setSuccess(false);
     
-    // Validazione lato client
     if (newPassword !== confirmPassword) {
       toast.error('Le password non coincidono');
       return;
@@ -52,6 +48,7 @@ const ChangePasswordForm = () => {
     
       toast.success(response.data.message);
       setIsLoading(false);
+      router.push('/login');
     } catch (error) {
       setIsLoading(false);
       if (axios.isAxiosError(error)) {
@@ -62,80 +59,89 @@ const ChangePasswordForm = () => {
     }
   };
 
-  // Utility per ottenere il CSRF token dai cookie
-  const getCookie = (name) => {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
+    <>
       <Toaster position='top-center' richColors />
-      <Card className="w-full max-w-sm shadow-md">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl text-center">Cambia Password</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1">
-              <label className="text-sm font-medium block">Password Attuale</label>
-              <Input  
-                type="password"
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-                required
-                className="h-10 text-base"
-              />
-            </div>
-            
-            <div className="space-y-1">
-              <label className="text-sm font-medium block">Nuova Password</label>
-              <Input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                className="h-10 text-base"
-              />
-            </div>
-            
-            <div className="space-y-1">
-              <label className="text-sm font-medium block">Conferma Nuova Password</label>
-              <Input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="h-10 text-base"
-              />
-            </div>
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white">
+        <div className="block sm:mx-auto sm:w-full sm:max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-white-800 dark:border-gray-200 mx-auto">
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+            <Image
+              src={`/imgs/swissbix.png`}
+              alt="Swissbix Logo"
+              width={1000}
+              height={1000}
+              className="h-14 w-auto mx-auto bg-white"
+              priority
+            />
+            <h2 className="mt-6 text-center text-xl font-bold leading-9 tracking-tight text-gray-900">
+              Cambia Password
+            </h2>
+          </div>
 
-            <Button 
-              type="submit"
-              className="w-full text-white bg-bixcolor-default hover:bg-bixcolor-light mt-4 h-12 text-base font-medium"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Elaborazione...' : 'Cambia Password'}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-      {isLoading && (
-        <div className="mt-4">
-          <LoadingComp />
+          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm/6 font-medium text-gray-900">
+                  Password Attuale
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-bixcolor-light sm:text-sm/6 p-4"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm/6 font-medium text-gray-900">
+                  Nuova Password
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-bixcolor-light sm:text-sm/6 p-4"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm/6 font-medium text-gray-900">
+                  Conferma Nuova Password
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-bixcolor-light sm:text-sm/6 p-4"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-bixcolor-default px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-bixcolor-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bixcolor-default"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Elaborazione...' : 'Cambia Password'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      )}
-    </div>
+        <div className="mt-6">
+          {isLoading && <LoadingComp />}
+        </div>
+      </div>
+    </>
   );
 };
 
