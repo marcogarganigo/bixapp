@@ -130,7 +130,7 @@ export default function SelectStandard({
         value={selectedOption}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder="Seleziona un utente"
+        placeholder="Seleziona un'opzione"
         isClearable
         // Fornisci le funzioni per far riconoscere i valori delle opzioni
         getOptionValue={(option: OptionType) => option.value}

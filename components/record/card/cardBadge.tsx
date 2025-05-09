@@ -6,7 +6,7 @@ import { AppContext } from '@/context/appContext';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // FLAG PER LO SVILUPPO
-const isDev = true;
+const isDev = false;
 
 // INTERFACCE
 interface PropsInterface {
@@ -77,7 +77,7 @@ export default function CardBadge({ tableid, recordid }: PropsInterface) {
         <div className="h-full w-full flex justify-center items-center">
           <div className="flex flex-wrap justify-center w-full h-5/6 bg-secondary rounded-xl p-3">
             {Object.entries(response.badgeItems).map(([key, item]) => (
-              <p key={key} className="w-1/3 text-center text-white">
+              <p key={key} className="w-1/3 text-center text-black">
                 {item}
               </p>
             ))}

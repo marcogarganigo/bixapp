@@ -157,40 +157,22 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
       } transition-all duration-300`}
       style={{
           right: `${getOffset() + 0}px`,
-          //bottom: `${getOffset() + 10}px`,
+          marginTop: `${getOffset() + 0}px`,
           zIndex: 50 + index
       }}
     >
-      {showInfoPopup && (
-        <div className="absolute top-5 left-5 z-20 bg-white border border-gray-300 rounded-lg shadow-lg p-4 w-72">
-          <h3 className="text-lg font-semibold mb-2">Info record</h3>
-          <ul className="text-sm text-gray-700">
-            <li><strong>Table ID:</strong> {tableid}</li>
-            <li><strong>Record ID:</strong> {recordid}</li>
-            <li><strong>Master Table ID:</strong> {mastertableid || '-'}</li>
-            <li><strong>Master Record ID:</strong> {masterrecordid || '-'}</li>
-          </ul>
-          <button 
-            onClick={() => setShowInfoPopup(false)} 
-            className="mt-3 bg-gray-100 hover:bg-gray-200 text-sm px-3 py-1 rounded"
-          >
-            Chiudi
-          </button>
-        </div>
-      )}
+      
 
-      <div className="h-1/5 w-full">
+      <div className="h-min w-full">
         <div className="h-1/6 w-full flex justify-between items-center px-4">
           <div className="flex-grow">
-            {activeServer !== 'belotti' && (
-              <button 
-                onClick={() => setShowInfoPopup(!showInfoPopup)} 
-                title="Mostra info"
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors hover:scale-110 transition-all duration-100 ease-in-out"
-              >
-                <Info className="w-5 h-5 text-gray-500 hover:text-gray-700" />
-              </button>
-            )}
+            <button 
+              className="p-1.5 rounded-full hover:bg-gray-100 transition-colors hover:scale-110 transition-all duration-100 ease-in-out" 
+              onClick={handleRemoveCard}
+              title="Chiudi"
+            >
+              <CircleX className="w-5 h-5 text-gray-500 hover:text-gray-700" />
+            </button>
           </div>
 
           <div className="flex items-center gap-2">
@@ -281,13 +263,6 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
                   )}
                 </div>
 
-                <button 
-                  onClick={() => setIsMaximized(!isMaximized)} 
-                  title="Ingrandisci"
-                  className="p-1.5 rounded-full hover:bg-gray-100 transition-colors hover:scale-110 transition-all duration-100 ease-in-out"
-                >
-                  <Maximize2 className="w-5 h-5 text-gray-500 hover:text-gray-700" />
-                </button>
 
                 <button 
                   className="p-1.5 rounded-full hover:bg-red-100 transition-colors hover:scale-110 transition-all duration-100 ease-in-out" 
@@ -299,14 +274,7 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
               </>
             )}
 
-            {/* X SEMPRE VISIBILE */}
-            <button 
-              className="p-1.5 rounded-full hover:bg-gray-100 transition-colors hover:scale-110 transition-all duration-100 ease-in-out" 
-              onClick={handleRemoveCard}
-              title="Chiudi"
-            >
-              <CircleX className="w-5 h-5 text-gray-500 hover:text-gray-700" />
-            </button>
+            
           </div>
         </div>
 
@@ -315,7 +283,7 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
         </div>
       </div>
           
-      <div className="h-5/6 w-full">
+      <div className="h-full w-full">
         <CardTabs tableid={tableid} recordid={recordid} mastertableid={mastertableid} masterrecordid={masterrecordid}></CardTabs>
       </div>
     </div>

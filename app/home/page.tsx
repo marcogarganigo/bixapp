@@ -9,7 +9,7 @@ import { getCsrfToken } from '@/utils/auth';
 import SidebarMenu from '@/components/nav/sidebar';
 import StandardContent from '@/components/standardContent';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
-//import Dashboard from '@/components/dashboard';
+import Dashboard from '@/components/dashboard';
 import { set } from 'lodash';
 //import SimplePopup from '@/components/inviaEmail';
 //import PopUpManager from '@/components/popUpManager';
@@ -49,11 +49,11 @@ export default function Home() {
         />*/}
 
         <div className="flex-1 bg-gray-100 p-4 h-5/6">
-          
-            
+          {selectedMenu === 'Dashboard' ? (
+            <Dashboard />
+          ) : (
             <StandardContent tableid={selectedMenu} />
-            
-          
+          )}
         </div>
       </div>
     </div>

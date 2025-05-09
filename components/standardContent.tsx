@@ -190,7 +190,7 @@ export default function StandardContent({ tableid }: PropsInterface) {
 
 
 
-      <div className="w-full h-5/6 flex gap-4 mb-4">
+      <div className="w-full h-11/12 flex gap-4 mb-4">
       {/*
       {isFiltersOpen && (
 

@@ -161,10 +161,9 @@ export default function SidebarMenu({  }: PropsInterface) {
                         />
                     )}
 
-                    {/* Sidebar */}
                     <div 
                         id="sidebar" 
-                        className={`fixed top-0 left-0 bg-black text-white h-full w-64 transition-all duration-300 rounded-r-xl shadow-lg z-100 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
+                        className={`overflow-auto fixed top-0 left-0 bg-black text-white h-full w-64 transition-all duration-300 rounded-r-xl shadow-lg z-100 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
                     >
                         <div className="py-6 px-4">
                             <Image 

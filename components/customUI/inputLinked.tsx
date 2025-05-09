@@ -152,18 +152,11 @@ export default function inputLinked({ initialValue='',onChange,linkedmaster_tabl
             placeholder="Inserisci un valore"
             className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
           />
-          <button type="button" onClick={() => {
-            if (linkedmaster_recordid && linkedmaster_tableid) {
-              handleRowClick('linked', linkedmaster_recordid, linkedmaster_tableid);
-            } else {
-              console.error('Missing required parameters for handleRowClick');
-            }
-          }} className="p-2 text-gray-500 hover:text-gray-700 focus:outline-none">+</button>
-</div>
+      </div>
       </div>
       
       {isOpen && (
-        <div className="absolute w-full z-10 bg-white mt-1 border border-gray-300 rounded-md shadow-lg">
+        <div className="absolute w-full z-10 bg-white mt-1 border border-gray-300 rounded-md shadow-lg text-xs">
           {loading ? (
             <div className="flex items-center justify-center p-4 text-gray-500">
               <Loader2 className="animate-spin mr-2" size={20} />

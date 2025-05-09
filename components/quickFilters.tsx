@@ -114,7 +114,7 @@ export default function QuickFilters({ propExampleValue }: PropsInterface) {
                   <select 
                     id="filter-type"
                     value={selectedView}
-                    className="w-64 h-10 bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 px-4 shadow-sm hover:border-gray-300 transition-all duration-200 outline-none"
+                    className="w-1/2 h-10 bg-white border border-gray-300 text-gray-700 text-xs rounded-lg focus:ring-gray-500 focus:border-gray-500 px-4 shadow-sm hover:border-gray-300 transition-all duration-200 outline-none"
                     onChange={handleViewChange}
                   >
                     {response.views.map((view) => (

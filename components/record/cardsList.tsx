@@ -260,144 +260,56 @@ export default function CardsList({ tableid, searchTerm, filters, view, order, c
       useEffect(() => {
         console.log('[DEBUG] RecordsTable rendered');
       });
-    return (
-        <GenericComponent response={responseData} loading={loading} error={error} title='recordsTable' elapsedTime={elapsedTime}> 
+      return (
+        <GenericComponent 
+            response={responseData} 
+            loading={loading} 
+            error={error} 
+            title='recordsTable' 
+            elapsedTime={elapsedTime}
+        > 
             {(response: ResponseInterface) => (
-                <div className="h-full w-full overflow-scroll">
-                    
-                    <div className="w-full h-full relative rounded-lg drop-shadow-md ">
-                        {/* Sostituisce la tabella con una visualizzazione a card */}
+                <div className="h-full w-full overflow-y-scroll">
+                    <div className="w-full h-full relative rounded-lg drop-shadow-md">
+                        {/* Visualizzazione a card */}
                         <div className="w-full space-y-4 pb-4">
-                        {/* Header di ordinamento */}
-                        <div className="bg-gray-200 dark:bg-gray-700 p-3 rounded-t-lg shadow-sm">
-                            <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Ordina per</h3>
-                            <select 
-                                className="text-xs bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1"
-                                onChange={(e) => {
-                                const [columnDesc, newDirection] = e.target.value.split('|');
-                                handleSort(columnDesc, newDirection);
-                                }}
-                            >
-                                {response.columns.map((column) => (
-                                <React.Fragment key={`sort-${column.desc}`}>
-                                    <option value={`${column.desc}|asc`}>
-                                    {column.desc} (A-Z)
-                                    </option>
-                                    <option value={`${column.desc}|desc`}>
-                                    {column.desc} (Z-A)
-                                    </option>
-                                </React.Fragment>
-                                ))}
-                            </select>
-                            </div>
-                        </div>
-                        
-                        {/* Card per ogni riga */}
-                        <div className="space-y-3 h-full w-full overflow-scroll">
-                            {response.rows.map((row) => (
-                            <div 
-                                key={row.recordid} 
-                                className="bg-white p-5 dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden"
-                            >
-                                <button
-                                    type ="button"
-                                    onClick={() => handleRowClick && tableid && context && handleRowClick(context, row.recordid, tableid, masterTableid, masterRecordid)}
-                                    className="w-min h-full float-end hover:cursor-pointer hover:scale-105">
-                                    <Maximize2 className="text-white"/>
-                                </button>
-
-                                <div className="p-4 space-y-2">
-                                {row.fields.map((field, index) => {
-                                    // Usa la descrizione della colonna come etichetta per il campo
-                                    const columnLabel = response.columns[index]?.desc || `Campo ${index + 1}`;
-                                    
-                                    return (
-                                    <div key={`${row.recordid}-${field.fieldid}`} className="flex flex-col">
-                                        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{columnLabel}</span>
-                                        <span className="text-sm text-gray-800 dark:text-gray-200">{field.value}</span>
+                            {/* Card per ogni riga */}
+                            <div className="space-y-3 h-full w-full mt-2">
+                                {response.rows.map((row) => (
+                                    <div 
+                                        key={row.recordid} 
+                                        className="bg-white p-5 dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden"
+                                    >
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRowClick && tableid && context && handleRowClick(context, row.recordid, tableid, masterTableid, masterRecordid)}
+                                            className="w-min h-full float-end hover:cursor-pointer hover:scale-105"
+                                        >
+                                            <Maximize2 className="text-white"/>
+                                        </button>
+    
+                                        <div className="p-4 space-y-2">
+                                            {row.fields.map((field, index) => {
+                                                // Usa la descrizione della colonna come etichetta per il campo
+                                                const columnLabel = response.columns[index]?.desc || `Campo ${index + 1}`;
+                                                
+                                                return (
+                                                    <div key={`${row.recordid}-${field.fieldid}`} className="flex flex-col">
+                                                        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                                                            {columnLabel}
+                                                        </span>
+                                                        <span className="text-sm text-gray-800 dark:text-gray-200">
+                                                            {field.value}
+                                                        </span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                    );
-                                })}
-                                </div>
+                                ))}
                             </div>
-                            ))}
                         </div>
-                        </div>
-
-                        <nav aria-label="Page navigation example" className="h-1/6 text-center mt-4">
-                            <ul className="inline-flex text-sm">
-                                {/* Pulsante Previous */}
-                                <li>
-                                    <button 
-                                        onClick={() => setTablePage(pagination.page - 1)} 
-                                        disabled={pagination.page === 1} 
-                                        className={`flex items-center justify-center px-3 h-8 ms-0 leading-tight border border-e-0 rounded-s-lg 
-                                            ${pagination.page === 1 ? 'text-gray-300 bg-gray-100 cursor-not-allowed' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'} 
-                                            dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                                    >Previous</button>
-                                </li>
-                                
-                                {/* Prima pagina */}
-                                <li>
-                                    <button 
-                                        onClick={() => setTablePage(1)} 
-                                        className={`flex items-center justify-center px-3 h-8 border 
-                                            ${pagination.page === 1 ? 'text-white bg-blue-600' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'} 
-                                            dark:border-gray-700 ${pagination.page === 1 ? 'dark:bg-blue-600' : 'dark:bg-gray-800'} dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                                    >1</button>
-                                </li>
-                                
-                                {/* Puntini di sospensione (se necessario) */}
-                                {pagination.page > 3 && (
-                                    <li>
-                                        <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
-                                    </li>
-                                )}
-                                
-                                {/* Pagina corrente (se non è la prima o l'ultima) */}
-                                {pagination.page !== 1 && pagination.page !== pagination.limit && (
-                                    <li>
-                                        <button 
-                                            className="flex items-center justify-center px-3 h-8 border text-white bg-blue-600 
-                                                dark:border-gray-700 dark:bg-blue-600 dark:text-white"
-                                        >{pagination.page}</button>
-                                    </li>
-                                )}
-                                
-                                {/* Puntini di sospensione (se necessario) */}
-                                {pagination.page < pagination.limit - 2 && (
-                                    <li>
-                                        <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
-                                    </li>
-                                )}
-                                
-                                {/* Ultima pagina (se diversa dalla prima) */}
-                                {pagination.limit > 1 && (
-                                    <li>
-                                        <button 
-                                            onClick={() => setTablePage(pagination.limit)} 
-                                            className={`flex items-center justify-center px-3 h-8 border 
-                                                ${pagination.page === pagination.limit ? 'text-white bg-blue-600' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'} 
-                                                dark:border-gray-700 ${pagination.page === pagination.limit ? 'dark:bg-blue-600' : 'dark:bg-gray-800'} dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                                        >{pagination.limit}</button>
-                                    </li>
-                                )}
-                                
-                                {/* Pulsante Next */}
-                                <li>
-                                    <button 
-                                        onClick={() => setTablePage(pagination.page + 1)} 
-                                        disabled={pagination.page === pagination.limit} 
-                                        className={`flex items-center justify-center px-3 h-8 leading-tight border rounded-e-lg 
-                                            ${pagination.page === pagination.limit ? 'text-gray-300 bg-gray-100 cursor-not-allowed' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'} 
-                                            dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                                    >Next</button>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
-                    {tableid}
                 </div>
             )}
         </GenericComponent>
