@@ -1,23 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { checkAuth, logoutUser } from '@/utils/auth';
-import { Toaster, toast } from 'sonner';
+import { useEffect } from 'react';
+import { Toaster } from 'sonner';
 import Navbar from '@/components/nav/navbar';
-import { getCsrfToken } from '@/utils/auth';
-import SidebarMenu from '@/components/nav/sidebar';
-import StandardContent from '@/components/standardContent';
+import Sidebar from '@/components/nav/sidebar';
+import MainContent from '@/components/mainContent';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
-import Dashboard from '@/components/dashboard';
-import { set } from 'lodash';
-//import SimplePopup from '@/components/inviaEmail';
-//import PopUpManager from '@/components/popUpManager';
-//import UserSettings from '@/components/userSettings';
 
 export default function Home() {
-  const {selectedMenu, setTableid, isPopupOpen, setIsPopupOpen, popUpType, popupRecordId} = useRecordsStore();
-  const router = useRouter();
+  const { selectedMenu, setTableid } = useRecordsStore();
 
   useEffect(() => {
     if (selectedMenu) {
@@ -25,34 +16,21 @@ export default function Home() {
     }
   }, [selectedMenu]);
 
-  return (    
-   <div className="w-full h-screen flex">
-    
+  return (
+    <div className="w-full h-screen flex">
       <Toaster richColors position="top-right" />
-      
-      {/* Sidebar occupa tutta l'altezza */}
-      <SidebarMenu className="h-screen  bg-gray-800 text-white" />
-
-      {/* Contenitore principale con Navbar e contenuto */}
+      <div className="h-screen bg-gray-800 text-white">
+        <Sidebar />
+      </div>
       <div className="flex flex-col w-full h-full">
-         {/* Contenitore principale con Navbar e contenuto */}
-        <Navbar className="w-full  bg-white shadow-md" />
-
-        {/* Contenuto principale */}
-
-        {/*<PopUpManager 
-          isOpen={isPopupOpen} 
-          onClose={() => setIsPopupOpen(false)} 
-          type={popUpType}
-          tableid={selectedMenu}
-          recordid={popupRecordId}
-        />*/}
-
+        <div className="w-full bg-white shadow-md">
+          <Navbar />
+        </div>
         <div className="flex-1 bg-gray-100 p-4 h-5/6">
-          {selectedMenu === 'Dashboard' ? (
-            <Dashboard />
+          { selectedMenu === '' ? (
+            <div></div>
           ) : (
-            <StandardContent tableid={selectedMenu} />
+            <MainContent tableid={selectedMenu} />
           )}
         </div>
       </div>

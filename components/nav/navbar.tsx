@@ -10,6 +10,7 @@ import { useRecordsStore } from '@/utils/stores/recordsStore';
 import { set } from 'lodash';
 import { useRouter } from 'next/navigation';
 import '../../app/globals.css';
+import { toast } from 'sonner';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const isDev = false;
@@ -37,7 +38,7 @@ export default function NavBar() {
     };
 
     // DATI DEL CONTESTO
-    const { user, handleLogout, activeServer } = useContext(AppContext);
+    const { user, handleLogout } = useRecordsStore()
 
     interface NavigationItem {
         name: string;
@@ -68,7 +69,11 @@ export default function NavBar() {
 
     const{setSelectedMenu} = useRecordsStore()
     const router = useRouter();
-    
+
+    const LogoutFunction = async () => {      
+        await handleLogout();
+        router.push('/login');
+    }
 
 
     return (
@@ -139,7 +144,7 @@ export default function NavBar() {
                                 </MenuItem>
                                 <MenuItem>
                                     <a
-                                        onClick={handleLogout}
+                                        onClick={() => LogoutFunction()}
                                         href="#"
                                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                                     >
@@ -181,5 +186,3 @@ export default function NavBar() {
         </GenericComponent>
     );
 };
-
-

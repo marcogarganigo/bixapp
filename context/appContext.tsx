@@ -1,25 +1,24 @@
 'use client';
 
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { checkAuth, logoutUser } from '@/utils/auth';
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
+import React, { createContext, useEffect, ReactNode } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import LoadingComp from '@/components/loading';
+import { useRecordsStore } from '@/utils/stores/recordsStore';
 
 interface AppContextType {
   user: string | null;
-  setUser: React.Dispatch<React.SetStateAction<string | null>>;
+  setUser: (user: string | null) => void;
   role: string | null;
-  setRole: React.Dispatch<React.SetStateAction<string | null>>;
+  setRole: (role: string | null) => void;
   chat: string | null;
-  setChat: React.Dispatch<React.SetStateAction<string | null>>;
+  setChat: (chat: string | null) => void;
   telefono: string | null;
-  setTelefono: React.Dispatch<React.SetStateAction<string | null>>;
+  setTelefono: (tel: string | null) => void;
   userName: string | null;
-  setUserName: React.Dispatch<React.SetStateAction<string | null>>;
-  handleLogout: () => void;
+  setUserName: (name: string | null) => void;
+  handleLogout: () => Promise<void>;
   activeServer: string | null;
-  setActiveServer: React.Dispatch<React.SetStateAction<string | null>>;
+  setActiveServer: (server: string | null) => void;
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -31,75 +30,73 @@ export const AppContext = createContext<AppContextType>({
   setChat: () => {},
   telefono: null,
   setTelefono: () => {},
-  userName: '',
+  userName: null,
   setUserName: () => {},
-  handleLogout: () => {},
-  activeServer: '',
+  handleLogout: async () => {},
+  activeServer: null,
   setActiveServer: () => {},
 });
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<string | null>(null);
-  const [role, setRole] = useState<string | null>(null);
-  const [chat, setChat] = useState<string | null>(null);
-  const [telefono, setTelefono] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
-  const [activeServer, setActiveServer] = useState<string | null>(null);
-  const [loadingAuth, setLoadingAuth] = useState(true); // <--- stato di caricamento
+  const {
+    user,
+    setUser,
+    role,
+    setRole,
+    chat,
+    setChat,
+    telefono,
+    setTelefono,
+    userName,
+    setUserName,
+    activeServer,
+    setActiveServer,
+    handleLogout,
+    verifyAuth,
+    loadingAuth,
+    setLoadingAuth,
+  } = useRecordsStore();
 
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === '/login') {
-      setLoadingAuth(false); 
-      return; // Evita il controllo se siamo già in /login
-    }
-    if (pathname === '/testConnection') {
+    const isLoginOrTest = pathname === '/login' || pathname === '/testConnection';
+    if (isLoginOrTest) {
       setLoadingAuth(false);
-      return; // Evita il controllo se siamo in /testConnection
+      return;
     }
 
-    async function verifyAuth() {
-      console.info('Verifica autenticazione...verifyAuth');
-      const result = await checkAuth();
-      if (!result.isAuthenticated || !result.username) {
-        router.push('/login');
-      } else {
-        setUser(result.username);
-        setRole(result.role || null);
-        setChat(result.chat || null);
-        setTelefono(result.telefono || null);
-        setUserName(result.name ?? null);
-        setActiveServer(result.activeServer ?? null);
-      }
-      setLoadingAuth(false); // <--- Fine verifica
+    async function check() {
+      await verifyAuth();
+      const isAuthed = useRecordsStore.getState().user;
+      if (!isAuthed) router.push('/login');
     }
-    verifyAuth();
-  }, [router, pathname]);
 
-  // Funzione di logout
-  const handleLogout = async () => {
-    const result = await logoutUser();
-    if (result.success) {
-      setUser(null);
-      setRole(null);
-      setUserName(null);
-      setActiveServer(null);
-      router.push('/login');
-    } else {
-      console.error('Logout fallito:', result.detail);
-    }
-  };
+    check();
+  }, [pathname]);
 
-  // Se sto ancora verificando l'autenticazione, mostro un caricamento
   if (loadingAuth) {
     return <LoadingComp />;
   }
 
   return (
-    <AppContext.Provider 
-      value={{ user, setUser, role, setRole, chat, setChat, telefono, setTelefono, userName, setUserName, handleLogout, activeServer, setActiveServer }}
+    <AppContext.Provider
+      value={{
+        user,
+        setUser,
+        role,
+        setRole,
+        chat,
+        setChat,
+        telefono,
+        setTelefono,
+        userName,
+        setUserName,
+        handleLogout,
+        activeServer,
+        setActiveServer,
+      }}
     >
       {children}
     </AppContext.Provider>

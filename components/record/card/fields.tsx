@@ -1,17 +1,16 @@
 import React, { useMemo, useContext, useState, useEffect } from 'react';
 import { useApi } from '@/utils/useApi';
 import GenericComponent from '../../genericComponent';
-import { AppContext } from '@/context/appContext';
-import InputWord from '@/components/customUI/inputWord';
-import InputNumber from '@/components/customUI/inputNumber';
-import InputDate from '@/components/customUI/inputDate';
-import InputMemo from '@/components/customUI/inputMemo';
-import InputCheckbox from '@/components/customUI/inputCheckbox';
-import SelectUser from '@/components/customUI/selectUser';
-import SelectStandard from '@/components/customUI/selectStandard';
-import InputLinked from '@/components/customUI/inputLinked';
-import InputEditor from '@/components/customUI/inputEditor';
-import InputFile from '@/components/customUI/inputFile';
+import InputWord from '@/components/customInputs/inputWord';
+import InputNumber from '@/components/customInputs/inputNumber';
+import InputDate from '@/components/customInputs/inputDate';
+import InputMemo from '@/components/customInputs/inputMemo';
+import InputCheckbox from '@/components/customInputs/inputCheckbox';
+import SelectUser from '@/components/customInputs/selectUser';
+import SelectStandard from '@/components/customInputs/selectStandard';
+import InputLinked from '@/components/customInputs/inputLinked';
+import InputEditor from '@/components/customInputs/inputEditor';
+import InputFile from '@/components/customInputs/inputFile';
 import { forEach, update } from 'lodash';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'sonner';
@@ -155,15 +154,12 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                 recordid: "0000"
             };
 
-            // DATI DEL CONTESTO
-            const { user } = useContext(AppContext);
-
+            
     // IMPOSTAZIONE DELLA RESPONSE (non toccare)
     const [responseData, setResponseData] = useState<ResponseInterface>(isDev ? responseDataDEV : responseDataDEFAULT);
     const [updatedFields, setUpdatedFields] = useState<{ [key: string]: string | string[] }>({});
 
-    const {removeCard,addCard,refreshTable,setRefreshTable,handleRowClick} = useRecordsStore();
-    const {activeServer } = useContext(AppContext);
+    const {removeCard,refreshTable,setRefreshTable,handleRowClick, activeServer} = useRecordsStore();
 
 
     // *** NEW: oggetto con tutti i valori correnti del form ***
@@ -344,7 +340,7 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                                         ) : field.fieldtype === 'linkedmaster' ? (
                                             <InputLinked 
                                                 initialValue={initialValue}
-                                                valuecode={field.value}
+                                                valuecode={typeof field.value === 'object' ? field.value : undefined}
                                                 onChange={(value: string) => handleInputChange(field.fieldid, value)}
                                                 tableid={tableid}
                                                 linkedmaster_tableid={field.linked_mastertable}

@@ -2,7 +2,6 @@ import React, { useMemo, useContext, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useApi } from '@/utils/useApi';
 import GenericComponent from '../genericComponent';
-import { AppContext } from '@/context/appContext';
 import { Home, Package, Mail, ChevronDown, ChevronUp, HelpCircle, Menu, X, LucideIcon } from 'lucide-react';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
 
@@ -40,17 +39,14 @@ const iconMap: Record<string, LucideIcon> = {
     'Mail': Mail,
 };
 
-export default function SidebarMenu({  }: PropsInterface) {
-    // DATI
+export default function Sidebar({  }: PropsInterface) {
     const devPropExampleValue = isDev ? "" : "";
 
-    // DATI RESPONSE DI DEFAULT
     const responseDataDEFAULT: ResponseInterface = {
         menuItems: {},
         otherItems: []
     };
 
-    // DATI RESPONSE PER LO SVILUPPO 
     const responseDataDEV: ResponseInterface = {
         menuItems: {
             home: {
@@ -82,17 +78,14 @@ export default function SidebarMenu({  }: PropsInterface) {
         otherItems: []
     };
 
-    //DATI DEL COMPONENTE
     const [openDropdown, setOpenDropdown] = useState('');
     const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const {setSelectedMenu, selectedMenu} = useRecordsStore();
+    const {setSelectedMenu, activeServer} = useRecordsStore();
 
-    // DATI DEL CONTESTO
-    const { user, activeServer } = useContext(AppContext);
+    const {  } = useRecordsStore();
 
-    //FUNZIONI DEL COMPONENTE
     const handleMouseEnter = (section: string) => {
         setActiveTooltip(section);
     };
@@ -103,7 +96,6 @@ export default function SidebarMenu({  }: PropsInterface) {
 
     const handleMenuClick = (item: string) => {
         setSelectedMenu(item);
-        // Close sidebar after selection on mobile
         setIsSidebarOpen(false);
     };
 
@@ -111,7 +103,6 @@ export default function SidebarMenu({  }: PropsInterface) {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    // IMPOSTAZIONE DELLA RESPONSE
     const [responseData, setResponseData] = useState<ResponseInterface>(isDev ? responseDataDEV : responseDataDEFAULT);
 
     const payload = useMemo(() => {
@@ -119,12 +110,10 @@ export default function SidebarMenu({  }: PropsInterface) {
         return {
             apiRoute: 'get_sidebarmenu_items',
         };
-    }, []); // Dipendenza vuota: viene eseguito solo al primo rendering
+    }, []);
     
-    // CHIAMATA AL BACKEND (solo se non in sviluppo)
     const { response, loading, error, elapsedTime  } = !isDev && payload ? useApi<ResponseInterface>(payload) : { response: null, loading: false, error: null, elapsedTime: null };
 
-    // AGGIORNAMENTO RESPONSE CON I DATI DEL BACKEND (solo se non in sviluppo)
     useEffect(() => {
         if (!isDev && response && JSON.stringify(response) !== JSON.stringify(responseData)) {
             setResponseData(response);
@@ -132,10 +121,9 @@ export default function SidebarMenu({  }: PropsInterface) {
     }, [response, responseData]);
 
     return (
-        <GenericComponent response={responseData} loading={loading} error={error} title="SidebarMenu" elapsedTime={elapsedTime}> 
+        <GenericComponent response={responseData} loading={loading} error={error} title="Sidebar" elapsedTime={elapsedTime}> 
             {(data) => (
                 <>
-                    {/* Toggle Button - Always visible */}
                     <button 
                         onClick={toggleSidebar} 
                         className="fixed top-4 left-4 z-110 p-2 bg-black text-white rounded-md shadow-lg hover:bg-gray-700 transition-all duration-300 sm:block cursor-pointer"
@@ -177,34 +165,6 @@ export default function SidebarMenu({  }: PropsInterface) {
                         </div>
 
                         <ul className="list-none p-0 m-0">
-                            {activeServer === 'telamico' && (
-                                <>
-                                    <li className="px-4 py-2">
-                                        <span className="block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors cursor-pointer" onClick={() => handleMenuClick('TelAmicoCalendario')}> 
-                                            Calendario TelAmico
-                                        </span>
-                                    </li>
-                                    <li className="px-4 py-2">
-                                        <span className="block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors cursor-pointer" onClick={() => handleMenuClick('TelAmicoAgenda')}> 
-                                            Agenda TelAmico
-                                        </span>
-                                    </li>
-                                    <li className="px-4 py-2">
-                                        <span className="block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors cursor-pointer" onClick={() => handleMenuClick('Calendario')}> 
-                                            Agenda TelAmico
-                                        </span>
-                                    </li>
-                                </>
-                            )}
-
-                            {activeServer === 'belotti' && responseData.otherItems.map((item) => (
-                                <li key={item.id} className="px-4 py-2">
-                                    <span className="block px-6 py-2 hover:bg-gray-700 rounded-md transition-colors cursor-pointer" onClick={() => handleMenuClick(item.id)}> 
-                                        {item.title}
-                                    </span>
-                                </li>
-                            ))}
-
                             {Object.entries(data['menuItems']).map(([key, item]) => {
                                 const Icon = iconMap[item.icon] || HelpCircle;
                                 return (
@@ -240,7 +200,6 @@ export default function SidebarMenu({  }: PropsInterface) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            // Regular link section
                                             <a 
                                                 href={item.href} 
                                                 className="flex items-center px-6 py-2 hover:bg-gray-700 rounded-md transition-colors"
