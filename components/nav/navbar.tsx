@@ -3,18 +3,14 @@ import { useApi } from '@/utils/useApi';
 import GenericComponent from '../genericComponent';
 import { AppContext } from '@/context/appContext';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image';
 import { LogOut, Settings, User, Lock } from 'lucide-react';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
-import { set } from 'lodash';
 import { useRouter } from 'next/navigation';
 import '../../app/globals.css';
-import { toast } from 'sonner';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const isDev = false;
-//INTERFACCE
     interface PropsInterface {
     }
 
@@ -22,22 +18,16 @@ const isDev = false;
       responseExampleValue: string;
     }
 
-
-
-
 export default function NavBar() {
-    //DATI
-    // DATI RESPONSE PER LO SVILUPPO 
+    //
     const responseDataDEV: ResponseInterface = {
     responseExampleValue: "Example"
     };
 
-    // DATI RESPONSE DI DEFAULT
     const responseDataDEFAULT: ResponseInterface = {
     responseExampleValue: "Default"
     };
 
-    // DATI DEL CONTESTO
     const { user, handleLogout } = useRecordsStore()
 
     interface NavigationItem {
@@ -55,19 +45,12 @@ export default function NavBar() {
     
     function classNames(...classes: string[]) {
         return classes.filter(Boolean).join(' ')
-    }
+    }                    
 
-                    
-
-    // IMPOSTAZIONE DELLA RESPONSE
     const [responseData, setResponseData] = useState<ResponseInterface>(isDev ? responseDataDEV : responseDataDEFAULT);
 
-
-
-    // CHIAMATA AL BACKEND (solo se non in sviluppo)
     const { response, loading, error } = { response: null, loading: false, error: null };
 
-    const{setSelectedMenu} = useRecordsStore()
     const router = useRouter();
 
     const LogoutFunction = async () => {      
@@ -84,10 +67,6 @@ export default function NavBar() {
         <Disclosure id="navbar" as="nav" className="bg-navbar shadow-black w-full h-16" data-headless-ui-state="">
             <div className="mx-auto w-full px-2 sm:px-6 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between">
-                    <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                        {/* Mobile menu button*/}
-                        
-                    </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
@@ -108,8 +87,6 @@ export default function NavBar() {
                         </div>
                     </div>
                     <div className="absolute z-90 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        
-                        {/* Profile dropdown */}
                         <Menu as="div" className="relative ml-3">
                             <div>
                                 <MenuButton className="relative flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -133,8 +110,7 @@ export default function NavBar() {
                                     <a
                                         href="#"
                                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                                        //change route to change-password
-                                        onClick={() => router.push('/change-password')}
+                                        onClick={() => router.push('/changePassword')}
                                     >
                                         <div className="flex items-center gap-2">
                                             <Lock className="w-4 h-4" />

@@ -66,7 +66,7 @@ export default function InputEditor({ initialValue='', onChange }: PropsInterfac
 
   return (
     <div className="flex flex-col">
-      <div className="">
+      <div className="w-full overflow-x-scroll">
         <div
           ref={containerRef}
           className="flex items-center rounded-md bg-white p-3 shadow-sm focus-within:outline-none focus-within:ring-1 focus-within:ring-gray-200 focus-within:ring-offset-2 transition-all duration-300 w-full"

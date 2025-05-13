@@ -5,9 +5,9 @@ const mode=process.env.NEXT_PUBLIC_MODE
 
 interface GenericComponentProps<T> {
     title?: string | null;
-    response?: T | null; // Optional
-    loading?: boolean; // Optional
-    error?: string | null; // Optional
+    response?: T | null;
+    loading?: boolean;
+    error?: string | null;
     elapsedTime?: number | null;
     children: (data: T) => React.ReactNode;
 }
@@ -27,15 +27,12 @@ const GenericComponent = <T,>({
 
     return (
         <>
-            {/* Wrapper invisibile per posizionare il titolo senza alterare il layout */}
             <span className="relative">
                 <span className={` absolute top-0 left-0 bg-black text-white text-xs px-2 py-1 rounded shadow-md 
                                 ${!isVisible ? 'hidden' : ''} 
                                 z-[9999] pointer-events-none`}>
                     Componente: <span className="text-red-600">{title}</span> {elapsedTime !== null && ` - Tempo: ${elapsedTime.toFixed(2)} ms`}
-                </span>
-                {/* Renderizza i children senza div aggiuntivi */}
-                
+                </span>                
             </span>
 
             {children(response as T)}

@@ -1,10 +1,8 @@
 import React, { useMemo, useState, useEffect, useContext } from 'react';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
 import { CircleX, Maximize2, Info, Trash2, Check } from 'lucide-react';
-import CardBadge from './badge';
 import CardTabs from './tabs';
 import { toast, Toaster } from 'sonner';
-import axiosInstance from '@/utils/axiosInstance'
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
 import { AppContext } from '@/context/appContext';
 
@@ -19,17 +17,12 @@ interface PropsInterface {
 }
 
 export default function RecordCard({ tableid, recordid, mastertableid, masterrecordid, type, index=0, total=1 }: PropsInterface) {
-
   const { removeCard, cardsList, refreshTable, setRefreshTable } = useRecordsStore();
-  const {activeServer} = useContext(AppContext);
+  const { activeServer } = useContext(AppContext);
   const [animationClass, setAnimationClass] = useState('animate-mobile-slide-in'); 
-  const [isMaximized, setIsMaximized] = useState(false);
-  const [mountedTime, setMountedTime] = useState<string>("");
-  const [showInfoPopup, setShowInfoPopup] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const getOffset = () => {
-    if (isMaximized) return 0;
     const baseOffset = window.innerWidth < 768 ? 10 : 20; 
     return (total - index - 1) * baseOffset;
   };
@@ -37,72 +30,61 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
   const handleRemoveCard = () => {
     setAnimationClass('animate-mobile-slide-out');
     setTimeout(() => {
-        removeCard(tableid, recordid);
+      removeCard(tableid, recordid);
     }, 300);
   };
 
   const deleteRecord = async () => {
-        try {
-            const response = await axiosInstanceClient.post(
-                "/postApi",
-                {
-                    apiRoute: "delete_record",
-                    tableid: tableid,
-                    recordid: recordid,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                }
-            )
-            handleRemoveCard();
-            toast.success('Record eliminato con successo');
-            removeCard(tableid, recordid);
-            setRefreshTable(refreshTable+1)
-        } catch (error) {
-            console.error('Errore durante l\'eliminazione del record', error);
-            toast.error('Errore durante l\'eliminazione del record');
+    try {
+      const response = await axiosInstanceClient.post(
+        "/postApi",
+        {
+          apiRoute: "delete_record",
+          tableid: tableid,
+          recordid: recordid,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
+      );
+      handleRemoveCard();
+      toast.success('Record eliminato con successo');
+      removeCard(tableid, recordid);
+      setRefreshTable(refreshTable+1);
+    } catch (error) {
+      console.error('Errore durante l\'eliminazione del record', error);
+      toast.error('Errore durante l\'eliminazione del record');
     }
+  };
 
   const handleTrashClick = () => {
     toast.warning(
-        "Sei sicuro di voler eliminare questo record?", 
-        {
-            action: {
-                label: "Conferma",
-                onClick: () => deleteRecord(),
-            },
-        }
+      "Sei sicuro di voler eliminare questo record?", 
+      {
+        action: {
+          label: "Conferma",
+          onClick: () => deleteRecord(),
+        },
+      }
     );
   };
-  
-  useEffect(() => {
-        const now = performance.now();
-        const minutes = Math.floor(now / 60000);
-        const seconds = Math.floor((now % 60000) / 1000);
-        const centiseconds = Math.floor((now % 1000) / 10);
-        setMountedTime(`${minutes}:${seconds.toString().padStart(2, '0')}.${centiseconds.toString().padStart(2, '0')}`);
-    }, []);
 
   return (
     <div
-      className={`fixed inset-x-0 mx-auto shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-gray-50 rounded-xl border-2 border-gray-50 p-3 ${animationClass} ${
-          isMaximized ? 'w-full h-full max-w-5xl' : 'w-11/12 h-5/6 max-w-4xl'
-      } transition-all duration-300`}
+      className={`fixed inset-x-0 mx-auto shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-gray-50 rounded-xl border-2 border-gray-50 p-3 ${animationClass} ${'w-11/12 h-5/6 max-w-4xl'} transition-all duration-300`}
       style={{
-          right: `${getOffset() + 0}px`,
-          marginTop: `${getOffset() + 0}px`,
-          zIndex: 50 + index
+        right: `${getOffset() + 0}px`,
+        marginTop: `${getOffset() + 0}px`,
+        zIndex: 50 + index
       }}
     >
-      
       <div className="h-min w-full">
         <div className="h-1/6 w-full flex justify-between items-center px-4">
           <div className="flex-grow">
             <button 
-              className="p-1.5 rounded-full hover:bg-gray-100 transition-colors hover:scale-110 transition-all duration-100 ease-in-out" 
+              className="p-1.5 rounded-full hover:bg-gray-100 hover:scale-110 transition-all duration-100 ease-in-out" 
               onClick={handleRemoveCard}
               title="Chiudi"
             >
@@ -129,7 +111,7 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
                 </div>
 
                 <button 
-                  className="p-1.5 rounded-full hover:bg-red-100 transition-colors hover:scale-110 transition-all duration-100 ease-in-out" 
+                  className="p-1.5 rounded-full hover:bg-red-100 hover:scale-110 transition-all duration-100 ease-in-out" 
                   onClick={handleTrashClick}
                   title="Elimina"
                 >
@@ -145,4 +127,4 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
       </div>
     </div>
   );
-};
+}

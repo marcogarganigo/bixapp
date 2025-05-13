@@ -7,12 +7,10 @@ import Image from 'next/image';
 import '../globals.css';
 import { loginUserApi, getActiveServer } from '@/utils/auth';
 import LoadingComp from '@/components/loading';
-//import { useRecordsStore } from '@/components/records/recordsStore';
 
 export default function Login() {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -29,16 +27,13 @@ export default function Login() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    // Eseguiamo la chiamata al nostro proxy su /postApi
     const result = await loginUserApi(username, password);
     if (result.success) {
-    
-      router.push('/home')
-
+      router.push('/home');
     } else {
       setIsLoading(false);
       toast.error(result.detail || 'Errore durante il login');
-  }
+    }
   };
 
   return (
@@ -86,17 +81,6 @@ export default function Login() {
                   >
                     Password
                   </label>
-                  {/*
-                  <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-semibold text-bixcolor-default hover:text-bixcolor-light"
-                    >
-                      Password dimenticata?
-                    </a>
-
-                  </div>
-                  */}
                 </div>
                 <div className="mt-2">
                   <input
@@ -109,12 +93,6 @@ export default function Login() {
                   />
                 </div>
               </div>
-
-              {error && (
-                <div className="text-red-500 text-sm">
-                  {error}
-                </div>
-              )}
 
               <div>
                 <button

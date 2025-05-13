@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     // You can also add localhost variants if needed:
     'localhost',
     '127.0.0.1',
+    'devmarco.swissbix.com'
   ],
 };
 

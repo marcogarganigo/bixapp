@@ -282,7 +282,7 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
         <GenericComponent response={responseData} loading={loading} error={error} title="CardFields">
             {(response: ResponseInterface) => (
                 <div className="h-full">
-                    <div className="h-full flex flex-col overflow-y-scroll overflow-x-hidden space-y-3">
+                    <div className="h-11/12 flex flex-col overflow-y-scroll overflow-x-hidden space-y-3">
                         {response.fields.map(field => {
                             const rawValue = typeof field.value === 'object' ? field.value?.value : field.value;
                             const initialValue = rawValue ?? '';
@@ -368,8 +368,8 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                             );
                         })}
                     </div>
-                    <div className="h-min">
-                        <button type="button" onClick={handleSave} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 me-2 mt-4 h-min xs:mb-2">
+                    <div className="h-min w-full">
+                        <button type="button" onClick={handleSave} className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 me-2 mt-4 h-min xs:mb-2">
                                 Salva
                         </button>
                     </div>
