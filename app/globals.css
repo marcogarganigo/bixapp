@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 /*
 @import "themes.css";
 */
@@ -21,7 +22,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter';
 }
 
 html {
@@ -218,7 +219,7 @@ body {
   --chart-4: 43 74% 66%;
   --chart-5: 27 87% 67%;
   --radius: 0.5rem;
-  --font-body: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 .theme-test {
   --sidebar-background: linear-gradient(180deg, #ffd900 90%, #ede4e4 200%);
@@ -245,5 +246,5 @@ body {
   --chart-4: 43 74% 66%;
   --chart-5: 27 87% 67%;
   --radius: 0.5rem;
-  --font-body: 'Revert', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }

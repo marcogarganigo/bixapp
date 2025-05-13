@@ -12,6 +12,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const isDev = false;
     interface PropsInterface {
+        exampleVaue?: string;
     }
 
     interface ResponseInterface {
@@ -64,8 +65,8 @@ export default function NavBar() {
             {(data: ResponseInterface) => (
                 <div>
                     
-        <Disclosure id="navbar" as="nav" className="bg-navbar shadow-black w-full h-16" data-headless-ui-state="">
-            <div className="mx-auto w-full px-2 sm:px-6 lg:px-8">
+        <Disclosure id="navbar" as="nav" className="relative bg-navbar shadow-black w-full h-16" data-headless-ui-state="">
+            <div className="relative mx-auto w-full px-2 sm:px-6 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="hidden sm:ml-6 sm:block">

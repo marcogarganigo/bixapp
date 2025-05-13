@@ -1,18 +1,11 @@
-import React, { useMemo, useContext, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useApi } from '@/utils/useApi';
 import GenericComponent from '../genericComponent';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
-import { ArrowUp, ArrowDown, Maximize2 } from 'lucide-react';
-import axiosInstance from '@/utils/axiosInstance';
-import { toast } from 'sonner';
-import { set } from 'lodash';
+import Preview from '@/components/record/card/preview'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-// FLAG PER LO SVILUPPO
 const isDev = false;
 
-// INTERFACCE
-// INTERFACCIA PROPS
 interface PropsInterface {
   tableid?: string;
   searchTerm?: string;
@@ -22,7 +15,6 @@ interface PropsInterface {
   masterRecordid?: string;
 }
 
-// INTERFACCIA RISPOSTA DAL BACKEND
 interface ResponseInterface {
   rows: Array<{
     recordid: string;
@@ -182,6 +174,13 @@ export default function CardsList({ tableid, searchTerm, view, context, masterTa
     console.log('[DEBUG] RecordsTable rendered');
   });
   
+  // Handle row click and pass context data to store
+  const handleCardClick = (recordid: string) => {
+    if (handleRowClick && tableid && context) {
+      handleRowClick(context, recordid, tableid, masterTableid, masterRecordid);
+    }
+  };
+  
   return (
     <GenericComponent 
       response={responseData} 
@@ -191,43 +190,25 @@ export default function CardsList({ tableid, searchTerm, view, context, masterTa
       elapsedTime={elapsedTime}
     > 
       {(response: ResponseInterface) => (
-        <div className="h-full w-full overflow-y-scroll">
-          <div className="w-full h-full relative rounded-lg drop-shadow-md">
-            <div className="w-full space-y-4 pb-4">
-              <div className="space-y-3 h-full w-full mt-2">
+        <div className="h-full w-full overflow-y-auto px-2 py-4">
+          <div className="w-full h-full">
+            {response.rows.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-64 text-gray-500 dark:text-gray-400">
+                <p className="text-xl font-medium">Nessun elemento trovato</p>
+                <p className="text-sm">Modifica i filtri o prova una nuova ricerca</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {response.rows.map((row) => (
-                  <div 
-                    key={row.recordid} 
-                    className="bg-white p-5 dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => handleRowClick && tableid && context && handleRowClick(context, row.recordid, tableid, masterTableid, masterRecordid)}
-                      className="w-min h-full float-end hover:cursor-pointer hover:scale-105"
-                    >
-                      <Maximize2 className="text-white"/>
-                    </button>
-
-                    <div className="p-4 space-y-2">
-                      {row.fields.map((field, index) => {
-                        const columnLabel = response.columns[index]?.desc || `Campo ${index + 1}`;
-                        
-                        return (
-                          <div key={`${row.recordid}-${field.fieldid}`} className="flex flex-col">
-                            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                              {columnLabel}
-                            </span>
-                            <span className="text-sm text-gray-800 dark:text-gray-200">
-                              {field.value === null ? '-' : field.value === '' ? '-' : field.value}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
+                  <Preview 
+                    key={row.recordid}
+                    row={row}
+                    columns={response.columns}
+                    onRowClick={handleCardClick}
+                  />
                 ))}
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}

@@ -5,18 +5,13 @@ import { AppContext } from '@/context/appContext';
 import { ChevronDown, SquarePlus } from 'lucide-react';
 import CardsList from '@/components/record/cardsList';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-// FLAG PER LO SVILUPPO
 const isDev = false;
 
-// INTERFACCE
-        // INTERFACCIA PROPS
         interface PropsInterface {
           tableid: string;
           recordid: string;
         }
 
-        // INTERFACCIA RISPOSTA DAL BACKEND
         interface ResponseInterface {
             linkedTables: Array<{
                 tableid: string;
@@ -28,7 +23,6 @@ const isDev = false;
 export default function CardLinked({ tableid,recordid }: PropsInterface) {
     //DATI
             // DATI PROPS PER LO SVILUPPO
-            const devPropExampleValue = isDev ? "Example prop" : tableid + '' + recordid;
 
             // DATI RESPONSE DI DEFAULT
             const responseDataDEFAULT: ResponseInterface = {
@@ -88,7 +82,7 @@ export default function CardLinked({ tableid,recordid }: PropsInterface) {
             masterTableid:tableid,
             masterRecordid:recordid,
         };
-    }, [recordid]);
+    }, [recordid, tableid]);
 
     // CHIAMATA AL BACKEND (solo se non in sviluppo) (non toccare)
     const { response, loading, error } = !isDev && payload ? useApi<ResponseInterface>(payload) : { response: null, loading: false, error: null };
@@ -137,7 +131,6 @@ export default function CardLinked({ tableid,recordid }: PropsInterface) {
                                         tableid={table.tableid}
                                         searchTerm={''}
                                         context="linked"
-                                        pagination={{ page: 1, limit: 10 }}
                                         masterTableid={tableid}
                                         masterRecordid={recordid}
                                     />

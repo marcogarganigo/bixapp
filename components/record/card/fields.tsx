@@ -11,18 +11,12 @@ import SelectStandard from '@/components/customInputs/selectStandard';
 import InputLinked from '@/components/customInputs/inputLinked';
 import InputEditor from '@/components/customInputs/inputEditor';
 import InputFile from '@/components/customInputs/inputFile';
-import { forEach, update } from 'lodash';
-import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'sonner';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-// FLAG PER LO SVILUPPO
 const isDev = false;
 
-// INTERFACCE
-        // INTERFACCIA PROPS
         interface PropsInterface {
           tableid: string;
           recordid: string;
@@ -30,7 +24,6 @@ const isDev = false;
           masterrecordid?: string;
         }
 
-        // INTERFACCIA RISPOSTA DAL BACKEND
         interface ResponseInterface {
             fields: Array<{
                 tableid: string;
@@ -50,17 +43,12 @@ const isDev = false;
         }
 
 export default function CardFields({ tableid,recordid,mastertableid,masterrecordid }: PropsInterface) {
-    //DATI
-            // DATI PROPS PER LO SVILUPPO
-            const devPropExampleValue = isDev ? "Example prop" : tableid + '' + recordid;
 
-            // DATI RESPONSE DI DEFAULT
             const responseDataDEFAULT: ResponseInterface = {
                 fields: [],
                 recordid: '',
               };
 
-            // DATI RESPONSE PER LO SVILUPPO 
             const responseDataDEV: ResponseInterface = {
                 fields: [
                     {
@@ -71,7 +59,7 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                         value: { code: '00000000000000000000000000000415', value: 'test1' },
                         fieldtype: "linkedmaster",
                         linked_mastertable: "contact",
-                        settings: {calcolato: 'false', default: '', nascosto: 'false', obbligatorio: 'false'}
+                        settings: {calcolato: 'false', default: '', nascosto: 'false', obbligatorio: 'true'}
                     },
                     {
                         tableid: "1",
@@ -293,7 +281,10 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                                     {/* Etichetta */}
                                     <div className="w-1/4 text-xs">
                                         <p className="text-black">
-                                            {field.description} 
+                                        {field.description}
+                                        {typeof field.settings === 'object' && field.settings.obbligatorio === 'true' && (
+                                            <span className="text-red-500 ml-1">*</span>
+                                        )}
                                         </p>
                                     </div>
                                                                     

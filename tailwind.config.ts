@@ -72,7 +72,7 @@ export default {
   		},
 
 		fontFamily: {
-		sans: ['Inter', 'sans-serif'], // Aggiungi Verdana come font di default
+		sans: ['Inter', 'sans-serif'],
 		},
   	}
   },

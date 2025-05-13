@@ -1,8 +1,8 @@
-import React, { useMemo, useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useRecordsStore } from '@/utils/stores/recordsStore';
-import { CircleX, Maximize2, Info, Trash2, Check } from 'lucide-react';
+import { CircleX, Trash2 } from 'lucide-react';
 import CardTabs from './tabs';
-import { toast, Toaster } from 'sonner';
+import { toast } from 'sonner';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
 import { AppContext } from '@/context/appContext';
 
