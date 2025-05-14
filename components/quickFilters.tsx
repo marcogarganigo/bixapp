@@ -1,21 +1,14 @@
-import React, { useMemo, useContext, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useApi } from '@/utils/useApi';
 import GenericComponent from './genericComponent';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
-import axiosInstance from '@/utils/axiosInstance';
-import { set } from 'lodash';
+import { useRecordsStore } from '@/utils/stores/store';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-// FLAG PER LO SVILUPPO
 const isDev = false;
 
-// INTERFACCE
-// INTERFACCIA PROPS
 interface PropsInterface {
   propExampleValue?: string;
 }
 
-// INTERFACCIA RISPOSTA DAL BACKEND
 interface ResponseInterface {
   views: {
     id: number;
@@ -24,16 +17,11 @@ interface ResponseInterface {
 }
 
 export default function QuickFilters({ propExampleValue }: PropsInterface) {
-  //DATI
-  // DATI PROPS PER LO SVILUPPO
-  const devPropExampleValue = isDev ? "Example prop" : propExampleValue;
 
-  // DATI RESPONSE DI DEFAULT
   const responseDataDEFAULT: ResponseInterface = {
     views: []
   };
 
-  // DATI RESPONSE PER LO SVILUPPO 
   const responseDataDEV: ResponseInterface = {
     views: [
       {

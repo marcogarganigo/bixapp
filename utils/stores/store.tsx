@@ -39,42 +39,12 @@ interface RecordsStore {
   tableView: string;
   setTableView: (tableView: string) => void;
 
-  columnOrder: string[];
-  setColumnOrder: (column_order: string[]) => void;
-
-  currentPage: number;
-  setCurrentPage: (currentPage: number) => void;
-
-  pageLimit: number;
-  setPageLimit: (pageLimit: number) => void;
-
   tableid: string;
   setTableid: (tableid: string) => void;
-
-  isPopupOpen: boolean;
-  setIsPopupOpen: (isPopupOpen: boolean) => void;
-
-  isFiltersOpen: boolean;
-  setIsFiltersOpen: (isFiltersOpen: boolean) => void;
-
-  popUpType: string;
-  setPopUpType: (popUpType: string) => void;
-
-  popupRecordId: string;
-  setPopupRecordId: (recordid: string) => void;
 
   // Dati e funzioni di autenticazione (ex AppContext)
   user: string | null;
   setUser: (user: string | null) => void;
-
-  role: string | null;
-  setRole: (role: string | null) => void;
-
-  chat: string | null;
-  setChat: (chat: string | null) => void;
-
-  telefono: string | null;
-  setTelefono: (telefono: string | null) => void;
 
   userName: string | null;
   setUserName: (name: string | null) => void;
@@ -155,15 +125,6 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
   tableView: '',
   setTableView: (tableView) => set({ tableView }),
 
-  columnOrder: [],
-  setColumnOrder: (columnOrder) => set({ columnOrder }),
-
-  currentPage: 1,
-  setCurrentPage: (currentPage) => set({ currentPage }),
-
-  pageLimit: 10,
-  setPageLimit: (pageLimit) => set({ pageLimit }),
-
   tableid: '',
   setTableid: (tableid) => {
     const { resetCardsList } = get();
@@ -171,30 +132,9 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
     set({ tableid });
   },
 
-  isPopupOpen: false,
-  setIsPopupOpen: (isPopupOpen) => set({ isPopupOpen }),
-
-  isFiltersOpen: false,
-  setIsFiltersOpen: (isFiltersOpen) => set({ isFiltersOpen }),
-
-  popUpType: '',
-  setPopUpType: (popUpType) => set({ popUpType }),
-
-  popupRecordId: '',
-  setPopupRecordId: (recordid) => set({ popupRecordId: recordid }),
-
   // Autenticazione
   user: null,
   setUser: (user) => set({ user }),
-
-  role: null,
-  setRole: (role) => set({ role }),
-
-  chat: null,
-  setChat: (chat) => set({ chat }),
-
-  telefono: null,
-  setTelefono: (telefono) => set({ telefono }),
 
   userName: null,
   setUserName: (name) => set({ userName: name }),
@@ -210,9 +150,6 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
     if (result.success) {
       set({
         user: null,
-        role: null,
-        chat: null,
-        telefono: null,
         userName: null,
         activeServer: null,
       });
@@ -233,9 +170,6 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
 
     set({
       user: result.username,
-      role: result.role || null,
-      chat: result.chat || null,
-      telefono: result.telefono || null,
       userName: result.name ?? null,
       activeServer: result.activeServer ?? null,
       loadingAuth: false,

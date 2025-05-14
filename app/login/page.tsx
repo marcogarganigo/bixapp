@@ -97,7 +97,7 @@ export default function Login() {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-bixcolor-default px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-bixcolor-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bixcolor-default"
+                  className="flex w-full justify-center rounded-md bg-gray-600 focus:bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm"
                 >
                   Accedi
                 </button>

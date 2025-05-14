@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 import _ from 'lodash';
 import { useApi } from '@/utils/useApi';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
+import { useRecordsStore } from '@/utils/stores/store';
 
 interface PropsInterface {
   initialValue?: string;

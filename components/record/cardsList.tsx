@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useApi } from '@/utils/useApi';
 import GenericComponent from '../genericComponent';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
+import { useRecordsStore } from '@/utils/stores/store';
 import Preview from '@/components/record/card/preview'
 
 const isDev = false;
@@ -164,17 +164,7 @@ export default function CardsList({ tableid, searchTerm, view, context, masterTa
       setResponseData(response);
     }
   }, [response, responseData]);
-
-  console.log('[DEBUG] RecordsTable');
-  useEffect(() => {
-    console.log('[DEBUG] payload changed', payload);
-  }, [payload]);
   
-  useEffect(() => {
-    console.log('[DEBUG] RecordsTable rendered');
-  });
-  
-  // Handle row click and pass context data to store
   const handleCardClick = (recordid: string) => {
     if (handleRowClick && tableid && context) {
       handleRowClick(context, recordid, tableid, masterTableid, masterRecordid);

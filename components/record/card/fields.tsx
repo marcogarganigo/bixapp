@@ -13,7 +13,7 @@ import InputEditor from '@/components/customInputs/inputEditor';
 import InputFile from '@/components/customInputs/inputFile';
 import { toast } from 'sonner';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
+import { useRecordsStore } from '@/utils/stores/store';
 
 const isDev = false;
 
@@ -202,7 +202,6 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                 }
             });
             
-            // Aggiungi i campi standard come JSON
             formData.append('fields', JSON.stringify(standardFields));
             formData.append('apiRoute', 'save_record_fields');
 
@@ -231,10 +230,8 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                 removeCard(tableid, recordid);
                 handleRowClick('standard', masterrecordid, mastertableid, mastertableid, masterrecordid);
 
-                //addCard(mastertableid, masterrecordid, 'standard');
             } else {
                 removeCard(tableid, recordid);
-                //addCard(tableid, recordid, 'standard');
                 handleRowClick('standard', newRecordId, tableid, mastertableid, masterrecordid);
             }
         }

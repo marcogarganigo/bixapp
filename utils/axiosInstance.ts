@@ -1,16 +1,13 @@
 // utils/axiosInstance.ts
 import axios from 'axios';
-import Cookies from 'js-cookie';
-import Router from 'next/router';
+import { toast } from 'sonner';
 
 // Crea un'istanza axios preconfigurata
 const axiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // Base URL del backend Django
-    withCredentials: true, // Invia automaticamente i cookie di sessione con ogni richiesta
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+    withCredentials: true,
 });
 
-
-  
 
 // Interceptor per loggare l'URL della richiesta e apiRoute se presente
 axiosInstance.interceptors.request.use((config) => {
@@ -19,6 +16,17 @@ axiosInstance.interceptors.request.use((config) => {
     return config;
 }, (error) => {
     console.error("[AxiosInstanceClient Request Error]", error);
+    toast.error('Errore durante la richiesta, è stato segnalato ai tecnici', error);
+
+    axiosInstance.post('/postApi', {
+        apiRoute: 'logError',
+        error: error.message,
+    }, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+    
     return Promise.reject(error);
 });
 

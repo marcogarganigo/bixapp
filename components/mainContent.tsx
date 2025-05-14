@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {useRecordsStore} from '@/utils/stores/recordsStore';
+import {useRecordsStore} from '@/utils/stores/store';
 import QuickFilters from './quickFilters';
 import RecordCard from './record/card/mainBody';
 import GenericComponent from './genericComponent';
 import { PlusIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import axiosInstanceClient from '@/utils/axiosInstanceClient';
-import { Table } from 'lucide-react';
-import { toast, Toaster } from 'sonner';
 import CardsList from './record/cardsList';
 
 
@@ -19,7 +16,7 @@ export default function MainContent({ tableid }: PropsInterface) {
 
   const [recordid] = useState('')
   const {refreshTable, setRefreshTable} = useRecordsStore();
-  const {cardsList, addCard, removeCard, resetCardsList, handleRowClick} = useRecordsStore();
+  const {cardsList, addCard, resetCardsList, handleRowClick} = useRecordsStore();
   const {searchTerm, tableView} = useRecordsStore();
 
   const refreshTableFunc = () => {

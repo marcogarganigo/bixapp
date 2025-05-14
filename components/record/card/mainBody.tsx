@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
+import { useRecordsStore } from '@/utils/stores/store';
 import { CircleX, Trash2 } from 'lucide-react';
 import CardTabs from './tabs';
 import { toast } from 'sonner';
@@ -17,7 +17,7 @@ interface PropsInterface {
 }
 
 export default function RecordCard({ tableid, recordid, mastertableid, masterrecordid, type, index=0, total=1 }: PropsInterface) {
-  const { removeCard, cardsList, refreshTable, setRefreshTable } = useRecordsStore();
+  const { removeCard, refreshTable, setRefreshTable } = useRecordsStore();
   const { activeServer } = useContext(AppContext);
   const [animationClass, setAnimationClass] = useState('animate-mobile-slide-in'); 
   const [showDropdown, setShowDropdown] = useState(false);

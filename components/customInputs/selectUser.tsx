@@ -48,8 +48,6 @@ export default function SelectUser({
     [lookupItems]
   );
 
-  
-  // Funzione per calcolare il valore iniziale in base a initialValue e isMulti
   const getInitialValue = () => {
     if (isMulti) {
       const initialValues = Array.isArray(initialValue)

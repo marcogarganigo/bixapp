@@ -4,7 +4,7 @@ import GenericComponent from '../genericComponent';
 import { AppContext } from '@/context/appContext';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { LogOut, Settings, User, Lock } from 'lucide-react';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
+import { useRecordsStore } from '@/utils/stores/store';
 import { useRouter } from 'next/navigation';
 import '../../app/globals.css';
 

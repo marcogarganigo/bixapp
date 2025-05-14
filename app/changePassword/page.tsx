@@ -11,8 +11,6 @@ const ChangePasswordForm = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -20,8 +18,6 @@ const ChangePasswordForm = () => {
 
   const handleSubmit = async (e: HandleSubmitEvent): Promise<void> => {
     e.preventDefault();
-    setError('');
-    setSuccess(false);
     
     if (newPassword !== confirmPassword) {
       toast.error('Le password non coincidono');
@@ -130,10 +126,10 @@ const ChangePasswordForm = () => {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-bixcolor-default px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-bixcolor-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bixcolor-default"
+                  className="flex w-full justify-center rounded-md bg-gray-600 focus:bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Elaborazione...' : 'Cambia Password'}
+                  Cambia Password
                 </button>
               </div>
             </form>

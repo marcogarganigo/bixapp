@@ -3,17 +3,11 @@
 import React, { createContext, useEffect, ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import LoadingComp from '@/components/loading';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
+import { useRecordsStore } from '@/utils/stores/store';
 
 interface AppContextType {
   user: string | null;
   setUser: (user: string | null) => void;
-  role: string | null;
-  setRole: (role: string | null) => void;
-  chat: string | null;
-  setChat: (chat: string | null) => void;
-  telefono: string | null;
-  setTelefono: (tel: string | null) => void;
   userName: string | null;
   setUserName: (name: string | null) => void;
   handleLogout: () => Promise<void>;
@@ -24,12 +18,6 @@ interface AppContextType {
 export const AppContext = createContext<AppContextType>({
   user: null,
   setUser: () => {},
-  role: null,
-  setRole: () => {},
-  chat: null,
-  setChat: () => {},
-  telefono: null,
-  setTelefono: () => {},
   userName: null,
   setUserName: () => {},
   handleLogout: async () => {},
@@ -41,12 +29,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const {
     user,
     setUser,
-    role,
-    setRole,
-    chat,
-    setChat,
-    telefono,
-    setTelefono,
     userName,
     setUserName,
     activeServer,
@@ -85,12 +67,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         setUser,
-        role,
-        setRole,
-        chat,
-        setChat,
-        telefono,
-        setTelefono,
         userName,
         setUserName,
         handleLogout,

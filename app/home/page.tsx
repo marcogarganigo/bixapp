@@ -5,7 +5,7 @@ import { Toaster } from 'sonner';
 import Navbar from '@/components/nav/navbar';
 import Sidebar from '@/components/nav/sidebar';
 import MainContent from '@/components/mainContent';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
+import { useRecordsStore } from '@/utils/stores/store';
 
 export default function Home() {
   const { selectedMenu, setTableid } = useRecordsStore();

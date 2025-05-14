@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useApi } from '@/utils/useApi';
 import GenericComponent from '../genericComponent';
 import { Home, Package, Mail, ChevronDown, ChevronUp, HelpCircle, Menu, X, LucideIcon } from 'lucide-react';
-import { useRecordsStore } from '@/utils/stores/recordsStore';
+import { useRecordsStore } from '@/utils/stores/store';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // FLAG PER LO SVILUPPO

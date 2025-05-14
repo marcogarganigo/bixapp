@@ -1,8 +1,7 @@
 import React from 'react';
-import { Maximize2, ArrowUpRight } from 'lucide-react';
+import { Maximize2 } from 'lucide-react';
 
-// Define interfaces for component props
-interface PreviewProps {
+interface PropsInterface {
   row: {
     recordid: string;
     css: string;
@@ -21,8 +20,7 @@ interface PreviewProps {
   onRowClick: (recordid: string) => void;
 }
 
-export const Preview: React.FC<PreviewProps> = ({ row, columns, onRowClick }) => {
-  // Funzione per ottenere un valore di campo principale (il primo campo come titolo)
+export default function Preview({ row, columns, onRowClick}: PropsInterface) {
   const getMainTitle = () => {
     if (row.fields.length > 0) {
       return row.fields[0].value || 'Senza titolo';
@@ -30,7 +28,6 @@ export const Preview: React.FC<PreviewProps> = ({ row, columns, onRowClick }) =>
     return 'Senza titolo';
   };
 
-  // Funzione per truncare il testo se è troppo lungo
   const truncateText = (text: string, maxLength = 25) => {
     if (text && text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
@@ -40,11 +37,11 @@ export const Preview: React.FC<PreviewProps> = ({ row, columns, onRowClick }) =>
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">
-      {/* Header con il bottone di espansione */}
-      <div className="flex justify-between items-center px-4 py-3 bg-gray-50 dark:bg-gray-750 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex justify-between items-center px-4 py-3 bg-gray-50 dark:bg-gray-750 border-b border-gray-200 dark:border-gray-700" onClick={() => onRowClick(row.recordid)}>
         <h3 className="font-medium text-gray-800  truncate">
           {getMainTitle()}
         </h3>
+        {/*}
         <button
           type="button"
           onClick={() => onRowClick(row.recordid)}
@@ -53,7 +50,9 @@ export const Preview: React.FC<PreviewProps> = ({ row, columns, onRowClick }) =>
         >
           <Maximize2 size={18} />
         </button>
+              */}
       </div>
+
 
       {/* Contenuto principale */}
       <div className="p-4 flex-1 grid grid-cols-2 gap-3">
@@ -72,12 +71,8 @@ export const Preview: React.FC<PreviewProps> = ({ row, columns, onRowClick }) =>
             </div>
           );
         })}
-      </div>
-
-      {/* Footer con azione principale */}
-      
+      </div>      
     </div>
   );
 };
 
-export default Preview;
