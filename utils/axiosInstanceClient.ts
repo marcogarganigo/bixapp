@@ -27,7 +27,6 @@ axiosInstanceClient.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-// Interceptor di risposta per gestire eventuali errori di autenticazione (401)
 axiosInstanceClient.interceptors.response.use(
   (response) => response,
   (error) => {

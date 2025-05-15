@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Loader2 } from 'lucide-react';
 import _ from 'lodash';
-import { useApi } from '@/utils/useApi';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
 import { useRecordsStore } from '@/utils/stores/store';
 
@@ -24,10 +23,7 @@ interface LinkedItem {
 interface LinkedMaster {
   linkeditems: LinkedItem[];
 }
-
-// Simulate API call - replace with your actual API call
 const fetchLinkedItems = async (searchTerm: string, linkedmaster_tableid: string, tableid: string, fieldid: string, formValues: Record<string, any>): Promise<LinkedItem[]> => {
-  // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 300));
   const payload = {
     apiRoute: "get_input_linked",
@@ -43,7 +39,6 @@ const fetchLinkedItems = async (searchTerm: string, linkedmaster_tableid: string
     },
     withCredentials: true,
   });
-  // Mock data - replace with actual API call
   return res.data;
 };
 
@@ -140,7 +135,7 @@ export default function inputLinked({ initialValue='',onChange,linkedmaster_tabl
   return (
     <div className="relative w-full" ref={wrapperRef}>
       <div className="">
-        <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+        <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
           
           <input
             name="word"
@@ -150,7 +145,7 @@ export default function inputLinked({ initialValue='',onChange,linkedmaster_tabl
             onFocus={handleFocus}
             autoComplete='off'
             placeholder="Inserisci un valore"
-            className="block min-w-0 grow py-1.5 pl-1 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 "
+            className="block min-w-0 grow py-1.5 pl-1 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline "
           />
       </div>
       </div>

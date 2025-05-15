@@ -24,7 +24,7 @@ export default function InputDate({ initialValue = '',onChange }: PropsInterface
   return (
     <div>
       <div className="">
-        <div className="flex items-center rounded-md bg-white pl-3  outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+        <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
           <input
             name="date"
             type="date"

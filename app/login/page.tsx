@@ -4,7 +4,6 @@ import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast, Toaster } from 'sonner';
 import Image from 'next/image';
-import '../globals.css';
 import { loginUserApi, getActiveServer } from '@/utils/auth';
 import LoadingComp from '@/components/loading';
 
@@ -13,16 +12,6 @@ export default function Login() {
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
-  const [activeServer, setActiveServer] = useState<string>('');
-  
-  useEffect(() => {
-    const fetchActiveServer = async () => {
-      const server = await getActiveServer();
-      setActiveServer(server.activeServer);
-    };
-    fetchActiveServer();
-  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,7 +33,7 @@ export default function Login() {
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <Image
               src={`/imgs/swissbix.png`}
-              alt={activeServer}
+              alt="SwissBix Logo"
               width={1000}
               height={1000}
               className="h-14 w-auto mx-auto bg-white"

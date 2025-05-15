@@ -41,7 +41,7 @@ export default function Preview({ row, columns, onRowClick}: PropsInterface) {
         <h3 className="font-medium text-gray-800  truncate">
           {getMainTitle()}
         </h3>
-        {/*}
+        
         <button
           type="button"
           onClick={() => onRowClick(row.recordid)}
@@ -50,14 +50,11 @@ export default function Preview({ row, columns, onRowClick}: PropsInterface) {
         >
           <Maximize2 size={18} />
         </button>
-              */}
       </div>
 
-
-      {/* Contenuto principale */}
       <div className="p-4 flex-1 grid grid-cols-2 gap-3">
         {row.fields.slice(1).map((field, index) => {
-          const actualIndex = index + 1; // Perché abbiamo già utilizzato il primo campo come titolo
+          const actualIndex = index + 1;
           const columnLabel = columns[actualIndex]?.desc || `Campo ${actualIndex + 1}`;
           
           return (

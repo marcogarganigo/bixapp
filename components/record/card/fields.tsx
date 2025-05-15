@@ -1,4 +1,4 @@
-import React, { useMemo, useContext, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useApi } from '@/utils/useApi';
 import GenericComponent from '../../genericComponent';
 import InputWord from '@/components/customInputs/inputWord';
@@ -143,14 +143,12 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
             };
 
             
-    // IMPOSTAZIONE DELLA RESPONSE (non toccare)
     const [responseData, setResponseData] = useState<ResponseInterface>(isDev ? responseDataDEV : responseDataDEFAULT);
     const [updatedFields, setUpdatedFields] = useState<{ [key: string]: string | string[] }>({});
 
-    const {removeCard,refreshTable,setRefreshTable,handleRowClick, activeServer} = useRecordsStore();
+    const {removeCard,refreshTable,setRefreshTable,handleRowClick} = useRecordsStore();
 
 
-    // *** NEW: oggetto con tutti i valori correnti del form ***
     const currentValues = useMemo(() => {
         const obj: Record<string, any> = {};
 
@@ -167,13 +165,11 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
 
         return obj;
     }, [responseData, updatedFields]);
-    // *** END NEW ***
 
     const handleInputChange = (fieldid: string, newValue: any | any[]) => {
         setUpdatedFields(prev => {
-            // Controlla se il valore è effettivamente cambiato prima di aggiornare lo stato
             if (prev[fieldid] === newValue) {
-                return prev; // Non fare nulla se il valore è uguale
+                return prev;
             }
             return {
                 ...prev,
@@ -184,14 +180,11 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
     
     
       const handleSave = async () => {
-        console.log("Tutti i campi aggiornati:", updatedFields);
-        let newRecordId = null;
         try {
             const formData = new FormData();
             formData.append('tableid', tableid || '');
             formData.append('recordid', recordid || '');
             
-            // Separa i file dagli altri campi
             const standardFields: { [key: string]: any } = {};
             
             Object.entries(updatedFields).forEach(([fieldId, value]) => {
@@ -213,10 +206,6 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
                 });
-            
-            newRecordId = saveResponse?.data?.recordid;
-
-            
                 
             toast.success('Record salvato con successo');
             recordid = responseData.recordid;
@@ -232,18 +221,16 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
 
             } else {
                 removeCard(tableid, recordid);
-                handleRowClick('standard', newRecordId, tableid, mastertableid, masterrecordid);
             }
         }
     };
     
 
 
-    // PAYLOAD (solo se non in sviluppo)
     const payload = useMemo(() => {
         if (isDev) return null;
         return {
-            apiRoute: 'get_record_card_fields', // riferimento api per il backend
+            apiRoute: 'get_record_card_fields',
             tableid: tableid,
             recordid: recordid,
             mastertableid: mastertableid, 
@@ -251,16 +238,14 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
         };
     }, [tableid,recordid]);
 
-    // CHIAMATA AL BACKEND (solo se non in sviluppo) (non toccare)
     const { response, loading, error } = !isDev && payload ? useApi<ResponseInterface>(payload) : { response: null, loading: false, error: null };
 
 
-    // AGGIORNAMENTO RESPONSE CON I DATI DEL BACKEND (solo se non in sviluppo) (non toccare)
     useEffect(() => {
         if (!isDev && response && JSON.stringify(response) !== JSON.stringify(responseData)) {
-            setResponseData(response); // Questo aggiorna solo quando c'è una differenza nei dati
+            setResponseData(response);
         }                                     
-    }, [response, isDev, responseData]); // Assicurati che le dipendenze siano ben definite
+    }, [response, isDev, responseData]);
     
 
     return (
@@ -271,11 +256,9 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                         {response.fields.map(field => {
                             const rawValue = typeof field.value === 'object' ? field.value?.value : field.value;
                             const initialValue = rawValue ?? '';
-                           
 
                             return (
                                 <div key={`${field.fieldid}-container`} className="flex items-center space-x-4 w-full">
-                                    {/* Etichetta */}
                                     <div className="w-1/4 text-xs">
                                         <p className="text-black">
                                         {field.description}

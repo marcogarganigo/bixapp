@@ -1,14 +1,9 @@
 import React, { useMemo, useContext, useState, useEffect } from 'react';
-import { useApi } from '@/utils/useApi';
 import GenericComponent from '../genericComponent';
-import { AppContext } from '@/context/appContext';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { LogOut, Settings, User, Lock } from 'lucide-react';
+import { LogOut, User, Lock } from 'lucide-react';
 import { useRecordsStore } from '@/utils/stores/store';
 import { useRouter } from 'next/navigation';
-import '../../app/globals.css';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const isDev = false;
     interface PropsInterface {

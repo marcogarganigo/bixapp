@@ -42,21 +42,18 @@ interface RecordsStore {
   tableid: string;
   setTableid: (tableid: string) => void;
 
-  // Dati e funzioni di autenticazione (ex AppContext)
   user: string | null;
   setUser: (user: string | null) => void;
 
   userName: string | null;
   setUserName: (name: string | null) => void;
 
-  activeServer: string | null;
-  setActiveServer: (server: string | null) => void;
-
   loadingAuth: boolean;
   setLoadingAuth: (val: boolean) => void;
 
   handleLogout: () => Promise<void>;
   verifyAuth: () => Promise<void>;
+
 }
 
 export const useRecordsStore = create<RecordsStore>((set, get) => ({
@@ -132,15 +129,12 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
     set({ tableid });
   },
 
-  // Autenticazione
   user: null,
   setUser: (user) => set({ user }),
 
   userName: null,
   setUserName: (name) => set({ userName: name }),
 
-  activeServer: null,
-  setActiveServer: (server) => set({ activeServer: server }),
 
   loadingAuth: true,
   setLoadingAuth: (val) => set({ loadingAuth: val }),
@@ -151,7 +145,6 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
       set({
         user: null,
         userName: null,
-        activeServer: null,
       });
       
     } else {
@@ -163,7 +156,6 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
     set({ loadingAuth: true });
     const result = await checkAuth();
     if (!result.isAuthenticated || !result.username) {
-      // Qui puoi gestire il redirect dove richiami verifyAuth
       set({ loadingAuth: false });
       return;
     }
@@ -171,7 +163,6 @@ export const useRecordsStore = create<RecordsStore>((set, get) => ({
     set({
       user: result.username,
       userName: result.name ?? null,
-      activeServer: result.activeServer ?? null,
       loadingAuth: false,
     });
   },

@@ -4,7 +4,6 @@ import { CircleX, Trash2 } from 'lucide-react';
 import CardTabs from './tabs';
 import { toast } from 'sonner';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
-import { AppContext } from '@/context/appContext';
 
 interface PropsInterface {
   tableid: string;
@@ -18,7 +17,6 @@ interface PropsInterface {
 
 export default function RecordCard({ tableid, recordid, mastertableid, masterrecordid, type, index=0, total=1 }: PropsInterface) {
   const { removeCard, refreshTable, setRefreshTable } = useRecordsStore();
-  const { activeServer } = useContext(AppContext);
   const [animationClass, setAnimationClass] = useState('animate-mobile-slide-in'); 
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -93,8 +91,6 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
           </div>
 
           <div className="flex items-center gap-2">
-            {activeServer !== 'belotti' && (
-              <>
                 <div className="relative">
                   <button 
                     className="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 
@@ -117,8 +113,6 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
                 >
                   <Trash2 className="w-5 h-5 text-primary hover:text-red-500" />
                 </button>
-              </>
-            )}
           </div>
         </div>
       </div>

@@ -1,15 +1,12 @@
-import React, { useMemo, useContext, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useApi } from '@/utils/useApi';
 import GenericComponent from '../genericComponent';
-import { Home, Package, Mail, ChevronDown, ChevronUp, HelpCircle, Menu, X, LucideIcon } from 'lucide-react';
+import { Home, Package, Mail, ChevronDown, HelpCircle, Menu, X, LucideIcon } from 'lucide-react';
 import { useRecordsStore } from '@/utils/stores/store';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-// FLAG PER LO SVILUPPO
 const isDev = false;
 
-// INTERFACCE
 interface PropsInterface {
 }
 
@@ -40,7 +37,6 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export default function Sidebar({  }: PropsInterface) {
-    const devPropExampleValue = isDev ? "" : "";
 
     const responseDataDEFAULT: ResponseInterface = {
         menuItems: {},
@@ -79,20 +75,9 @@ export default function Sidebar({  }: PropsInterface) {
     };
 
     const [openDropdown, setOpenDropdown] = useState('');
-    const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const {setSelectedMenu, activeServer} = useRecordsStore();
-
-    const {  } = useRecordsStore();
-
-    const handleMouseEnter = (section: string) => {
-        setActiveTooltip(section);
-    };
-
-    const handleMouseLeave = () => {
-        setActiveTooltip(null);
-    };
+    const {setSelectedMenu} = useRecordsStore();
 
     const handleMenuClick = (item: string) => {
         setSelectedMenu(item);
@@ -141,7 +126,6 @@ export default function Sidebar({  }: PropsInterface) {
                         </div>
                     </button>
 
-                    {/* Overlay for closing sidebar when clicking outside (mobile only) */}
                     {isSidebarOpen && (
                         <div 
                             className="fixed inset-0 bg-transparent bg-opacity-50 z-40 lg:hidden"
@@ -156,21 +140,19 @@ export default function Sidebar({  }: PropsInterface) {
                         <div className="py-6 px-4">
                             <Image 
                                 src={`/imgs/bixdata.png`}
-                                alt={activeServer ?? ''}
+                                alt="Logo"
                                 width={1000}
                                 height={1000}
                                 className="h-16 w-auto m-auto hover:cursor-pointer hover:scale-105 hover:translate-y-1 transition-all ease-in-out duration-150"
                                 onClick={() => window.location.reload()}
                             />
                         </div>
-
                         <ul className="list-none p-0 m-0">
                             {Object.entries(data['menuItems']).map(([key, item]) => {
                                 const Icon = iconMap[item.icon] || HelpCircle;
                                 return (
                                     <li key={item.id} className="px-4 py-2">
                                         {item.subItems ? (
-                                            // Dropdown section
                                             <div>
                                                 <button 
                                                     onClick={() => setOpenDropdown(openDropdown === item.id ? '' : item.id)} 
@@ -183,7 +165,6 @@ export default function Sidebar({  }: PropsInterface) {
                                                     <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${openDropdown === item.id ? '-rotate-180' : ''}`} />
                                                 </button>
 
-                                                {/* Dropdown menu */}
                                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openDropdown === item.id ? 'max-h-96' : 'max-h-0'}`}>
                                                     <ul className="py-1 ml-6">
                                                         {item.subItems.map((subItem) => (

@@ -1,63 +1,59 @@
-import React, { useMemo, useContext, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useApi } from '@/utils/useApi';
-import GenericComponent from '../../genericComponent';
-import { AppContext } from '@/context/appContext';
+import GenericComponent from '@/components/genericComponent';
 import CardFields from './fields';
 import CardLinked from './linked';
 
 const isDev = false;
 
-        interface PropsInterface {
-          tableid: string;
-          recordid: string;
-          mastertableid?: string;
-          masterrecordid?: string;
-        }
+interface PropsInterface {
+  tableid: string;
+  recordid: string;
+  mastertableid?: string;
+  masterrecordid?: string;
+}
 
-        interface ResponseInterface {
-            cardTabs: []
-            activeTab: string;
-        }
+interface ResponseInterface {
+  cardTabs: []
+  activeTab: string;
+}
 
 export default function CardTabs({ tableid,recordid,mastertableid, masterrecordid }: PropsInterface) {
+  const responseDataDEFAULT: ResponseInterface = {
+    cardTabs: [], 
+    activeTab: 'Campi'
+  };
 
-            const responseDataDEFAULT: ResponseInterface = {
-                cardTabs: [], 
-                activeTab: 'Campi'
-              };
+  const responseDataDEV: ResponseInterface = {
+    cardTabs: [],
+    activeTab: 'Campi'
+  };
 
-            const responseDataDEV: ResponseInterface = {
-                cardTabs: [],
-                activeTab: 'Campi'
-            };
+  const [responseData, setResponseData] = useState<ResponseInterface>(isDev ? responseDataDEV : responseDataDEFAULT);
 
-    const [responseData, setResponseData] = useState<ResponseInterface>(isDev ? responseDataDEV : responseDataDEFAULT);
+  const payload = useMemo(() => {
+    if (isDev) return null;
+    return {
+      apiRoute: 'get_card_active_tab',
+      tableid: tableid
+    };
+  }, [tableid, recordid]);
 
-    const payload = useMemo(() => {
-        if (isDev) return null;
-        return {
-            apiRoute: 'get_card_active_tab',
-            tableid: tableid
-        };
-    }, [tableid, recordid]);
+  const [activeTab, setActiveTab] = useState<string>('Campi');
 
-    const [activeTab, setActiveTab] = useState<string>('Campi');
+  const { response, loading, error } = !isDev && payload ? useApi<ResponseInterface>(payload) : { response: null, loading: false, error: null };
 
+  useEffect(() => {
+    if (!isDev && response && JSON.stringify(response) !== JSON.stringify(responseData)) {
+      setResponseData(response);
+      setActiveTab(response.activeTab);
+    }
+  }, [response]);
 
-    const { response, loading, error } = !isDev && payload ? useApi<ResponseInterface>(payload) : { response: null, loading: false, error: null };
-
-    useEffect(() => {
-        if (!isDev && response && JSON.stringify(response) !== JSON.stringify(responseData)) {
-            setResponseData(response);
-            setActiveTab(response.activeTab);
-        }
-    }, [response]);
-
-
-    return (
-      <GenericComponent> 
+  return (
+    <GenericComponent> 
       {(data) => (
-          <div className="h-full">
+        <div className="h-full">
           <div className="h-min text-sm font-medium text-center text-gray-500 border-gray-200 dark:text-gray-400 dark:border-gray-700">
             <ul className="flex flex-wrap -mb-px relative">
               {responseData.cardTabs.map((tab, index) => (
@@ -87,8 +83,5 @@ export default function CardTabs({ tableid,recordid,mastertableid, masterrecordi
         </div>
       )}
     </GenericComponent>
-    );
+  );
 };
-
-
-

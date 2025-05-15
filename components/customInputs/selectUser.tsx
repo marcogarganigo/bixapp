@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useState, KeyboardEvent } from 'react';
 import Select, { SingleValue, MultiValue, ActionMeta } from 'react-select';
 
-// INTERFACCIA PROPS
 interface PropsInterface {
   lookupItems: Array<{ id: string; firstname: string; lastname: string }>;
   initialValue?: string | string[];
-  // onChange accetta sia string che array di string a seconda della modalità usata
   onChange?: (value: string | string[]) => void;
   isMulti?: boolean;
 }
@@ -15,7 +13,6 @@ interface OptionType {
   label: string;
 }
 
-// Stili custom per react-select
 const customStyles = {
   control: () =>
     "min-h-[42px] rounded-lg border border-gray-300 bg-gray-50 hover:border-gray-500 focus:border-gray-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 pl-2 pr-2",
@@ -38,7 +35,6 @@ export default function SelectUser({
   onChange,
   isMulti = false,
 }: PropsInterface) {
-  // Calcola le opzioni a partire da lookupItems
   const options: OptionType[] = useMemo(
     () =>
       lookupItems.map((item) => ({
@@ -59,13 +55,10 @@ export default function SelectUser({
     }
   };
 
-  // Stato per gestire l'opzione selezionata
   const [selectedOption, setSelectedOption] = useState<
     OptionType | OptionType[] | null
   >(getInitialValue());
 
-  
-  // Aggiorna lo stato se cambiano initialValue, lookupItems o la modalità isMulti
   useEffect(() => {
     const computed = getInitialValue();
     console.log("DEBUG: lookupItems:", lookupItems);
@@ -74,12 +67,10 @@ export default function SelectUser({
     setSelectedOption(computed);
   }, [initialValue, isMulti, lookupItems, options]);
 
-  // Effetto per il debug del valore di initialValue
   useEffect(() => {
     console.log("DEBUG: initialValue ricevuto:", initialValue);
   }, [initialValue]);
 
-  // Gestione della modifica della selezione
   const handleChange = (
     newValue: SingleValue<OptionType> | MultiValue<OptionType>,
     actionMeta: ActionMeta<OptionType>
@@ -100,7 +91,6 @@ export default function SelectUser({
     }
   };
 
-  // Gestione del tasto Invio: simula il click sulla prima opzione del menu se presente
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
       const select = event.target as HTMLElement;
@@ -130,7 +120,6 @@ export default function SelectUser({
         onKeyDown={handleKeyDown}
         placeholder="Seleziona un utente"
         isClearable
-        // Fornisci le funzioni per far riconoscere i valori delle opzioni
         getOptionValue={(option: OptionType) => option.value}
         getOptionLabel={(option: OptionType) => option.label}
         classNames={{

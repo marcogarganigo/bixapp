@@ -13,7 +13,6 @@ export default function InputFile({ initialValue = null, onChange }: PropsInterf
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Pulizia vecchio blob
     return () => {
       if (fileUrl?.startsWith('blob:')) {
         URL.revokeObjectURL(fileUrl);
@@ -23,14 +22,12 @@ export default function InputFile({ initialValue = null, onChange }: PropsInterf
 
   useEffect(() => {
     if (initialValue && typeof initialValue === 'string') {
-      // È un URL?
       const isProbablyUrl = initialValue.includes('/') || initialValue.startsWith('http');
       if (isProbablyUrl) {
         const name = decodeURIComponent(initialValue.split('/').pop() || 'file');
         setFileName(name);
         setFileUrl(initialValue);
       } else {
-        // È solo testo? Crea un blob
         const blob = new Blob([initialValue], { type: 'text/plain' });
         const blobUrl = URL.createObjectURL(blob);
         setFileName('testo.txt');
@@ -103,8 +100,8 @@ export default function InputFile({ initialValue = null, onChange }: PropsInterf
                 const link = document.createElement('a');
                 link.href = fileUrl;
                 console.log(fileUrl);
-                link.download = fileName;  // Usa il nome del file per il download
-                link.click();  // Simula un click sul link per avviare il download
+                link.download = fileName;
+                link.click();
               }}
               className="flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-md border border-blue-200 hover:bg-blue-100 transition-colors"
               title="Scarica il file"

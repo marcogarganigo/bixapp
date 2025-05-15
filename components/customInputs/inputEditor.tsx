@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import Editor, { EditorOptions } from '@toast-ui/editor';
 
-// INTERFACCIA PROPS
 interface PropsInterface {
   initialValue?: string;
   onChange?: (value: string) => void;
@@ -12,7 +11,6 @@ export default function InputEditor({ initialValue='', onChange }: PropsInterfac
   const editorRef = useRef<Editor | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Inizializza l'editor
   useEffect(() => {
     if (containerRef.current && !editorRef.current) {
       editorRef.current = new Editor({
@@ -43,17 +41,16 @@ export default function InputEditor({ initialValue='', onChange }: PropsInterfac
         editorRef.current = null;
       }
     };
-  }, []); // Solo all'inizializzazione
+  }, []);
 
-      /* 2. Aggiorna il contenuto quando la prop cambia */
-      useEffect(() => {
-        if (editorRef.current) {
-          const current = editorRef.current.getHTML();
-          if (current !== initialValue) {
-            editorRef.current.setHTML(initialValue ?? '');
-          }
+    useEffect(() => {
+      if (editorRef.current) {
+        const current = editorRef.current.getHTML();
+        if (current !== initialValue) {
+          editorRef.current.setHTML(initialValue ?? '');
         }
-      }, [initialValue]);
+      }
+    }, [initialValue]);
 
   return (
     <div className="flex flex-col w-full">

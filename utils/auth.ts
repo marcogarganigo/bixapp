@@ -1,7 +1,5 @@
 import axiosInstance from '@/utils/axiosInstance';
 import axios from 'axios';
-import axiosInstanceClient from './axiosInstanceClient';
-
 // Funzione per leggere il valore di un cookie (ad es. "csrftoken")
 export function getCookie(name: string): string | null {
   if (typeof document === 'undefined') return null;
@@ -80,15 +78,13 @@ async function getCsrf() {
   try {
     const resp = await axios.post('/postApi', {
       apiRoute: 'getCsrf',
-    });
+    }); 
     console.log('CSRF Response:', resp.data);
   } catch (error) {
     console.error('Errore nel recupero CSRF', error);
   }
 }
 
-// Nuova funzione per login
-// Usando fetch o axios, basta puntare a /postApi e passare { apiRoute: 'login', ... }
 export async function loginUserApi(
   username: string,
   password: string
@@ -101,9 +97,8 @@ export async function loginUserApi(
       username,
       password,
     });
-    return response.data; // Deve ritornare { success: boolean, detail?: string }
+    return response.data;
   } catch (error: any) {
-    // Se il server restituisce 401 (credenziali errate) o altri errori
     const detail = error.response?.data?.error || 'Errore di rete';
     return {
       success: false,
@@ -134,10 +129,6 @@ export interface CheckAuthResponse {
   isAuthenticated: boolean;
   username?: string;
   name?: string;
-  role?: string | null; // Add the role property
-  chat?: string | null;
-  telefono?: string | null;
-  activeServer?: string;
 }
 
 // Funzione per controllare se l'utente è autenticato (endpoint: /auth/user/)
@@ -154,10 +145,6 @@ export async function checkAuth(): Promise<CheckAuthResponse> {
       isAuthenticated: response.data.isAuthenticated,
       username: response.data.username,
       name: response.data.name,
-      role: response.data.role,
-      chat: response.data.chat,
-      telefono: response.data.telefono,
-      activeServer: activeServer,
     };
   } catch (error: any) {
     if (error.response && error.response.status === 401) {

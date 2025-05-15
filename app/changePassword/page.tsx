@@ -34,9 +34,7 @@ const ChangePasswordForm = () => {
   };
 
   const changePassword = async () => {
-    try {
-      console.info('Cambio password in corso...');
-      
+    try {      
       const response = await axiosInstanceClient.post("/postApi", {
         apiRoute: "changePassword",
         old_password: oldPassword,

@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useApi } from '@/utils/useApi';
-import GenericComponent from '../genericComponent';
+import GenericComponent from '@/components/genericComponent';
 import { useRecordsStore } from '@/utils/stores/store';
 import Preview from '@/components/record/card/preview'
 
@@ -34,15 +34,6 @@ interface ResponseInterface {
 }
 
 export default function CardsList({ tableid, searchTerm, view, context, masterTableid, masterRecordid }: PropsInterface) {
-  useEffect(() => {
-    const unsub = useRecordsStore.subscribe((state, prevState) => {
-      console.log('[zustand]', { prev: prevState, next: state });
-    });
-    return unsub;
-  }, []);
-
-  const devPropExampleValue = isDev ? "Example prop" : tableid + ' ' + searchTerm + ' ' + ' ' + context;
-
   const responseDataDEFAULT: ResponseInterface = {
     rows: [],
     columns: []
@@ -142,7 +133,6 @@ export default function CardsList({ tableid, searchTerm, view, context, masterTa
   const [responseData, setResponseData] = useState<ResponseInterface>(isDev ? responseDataDEV : responseDataDEFAULT);
 
   const refreshTable    = useRecordsStore(s => s.refreshTable);
-  const setRefreshTable = useRecordsStore(s => s.setRefreshTable);
   const handleRowClick  = useRecordsStore(s => s.handleRowClick);
 
   const payload = useMemo(() => {

@@ -6,8 +6,6 @@ import GenericComponent from './genericComponent';
 import { PlusIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import CardsList from './record/cardsList';
 
-
-// INTERFACCIA PROPS
 interface PropsInterface {
   tableid: string;
 }

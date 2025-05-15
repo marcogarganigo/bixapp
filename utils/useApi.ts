@@ -19,21 +19,17 @@ export const useApi = <T>(
         setLoading(true);
         setError(null);
 
-        // Esegui una POST verso /postApi con axios
         const res = await axios.post<T>('/postApi', payload, {
           headers: {
             'Content-Type': 'application/json',
           },
-          // Se vuoi includere i cookie (es. per CSRF) abilita le credenziali
           withCredentials: true,
         });
 
-        // Se la risposta è andata a buon fine
         setResponse(res.data);
       } catch (err: any) {
         setError(err.message || 'Errore durante il recupero dei dati');
       } finally {
-        // Calcola il tempo trascorso dalla richiesta
         const timeTaken = performance.now() - startTime;
         setElapsedTime(timeTaken);
         setLoading(false);
