@@ -29,7 +29,6 @@ interface MenuItem {
     subItems?: SubItem[];
 }
 
-// Mappa delle icone
 const iconMap: Record<string, LucideIcon> = {
     'Home': Home,
     'Package': Package,

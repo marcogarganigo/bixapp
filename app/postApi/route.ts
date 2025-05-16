@@ -124,15 +124,11 @@ export async function POST(request: Request) {
     const payload = rawFormData ?? rest;
     const response = await axiosInstance.post(djangoUrl, payload, axiosConfig);
 
-       // Estrazione dei cookie dalla risposta del backend
   const setCookieHeader = response.headers['set-cookie'] as string | string[] | undefined;
 
-  // Ricava il content-type della risposta
   const resContentType = response.headers['content-type'];
 
-  // Gestione della risposta in base al content-type
   if (resContentType && resContentType.includes('application/pdf')) {
-    // Risposta Blob: PDF
     const contentDisposition = response.headers['content-disposition'] || 'attachment; filename="file.pdf"';
 
     const nextResponse = new Response(response.data, {
@@ -153,7 +149,6 @@ export async function POST(request: Request) {
 
     return nextResponse;
   } else {
-    // Risposta JSON: convertiamo l'arraybuffer in stringa e poi facciamo il parse
     const parsedData = JSON.parse(Buffer.from(response.data).toString('utf-8'));
     const nextResponse = NextResponse.json(parsedData, { status: 200 });
 

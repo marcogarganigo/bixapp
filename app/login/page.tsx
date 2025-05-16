@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast, Toaster } from 'sonner';
 import Image from 'next/image';
-import { loginUserApi, getActiveServer } from '@/utils/auth';
+import { loginUserApi } from '@/utils/auth';
 import LoadingComp from '@/components/loading';
 
 export default function Login() {

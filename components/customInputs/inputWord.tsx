@@ -28,7 +28,7 @@ export default function InputWord({ initialValue = '', onChange }: PropsInterfac
             name="word"
             type="text"
             value={value}
-            onChange={(e) => setValue(e.target.value)} // Aggiorna lo stato locale
+            onChange={(e) => setValue(e.target.value)}
             placeholder="Inserisci un valore"
             className="block min-w-0 grow py-1.5 pl-1 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-0 "
           />
