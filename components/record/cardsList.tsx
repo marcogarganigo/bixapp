@@ -162,7 +162,7 @@ export default function CardsList({ tableid, searchTerm, view, context, masterTa
   };
   
   return (
-    <GenericComponent 
+    <GenericComponent
       response={responseData} 
       loading={loading} 
       error={error} 

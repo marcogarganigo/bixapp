@@ -15,7 +15,6 @@ const isDev = false;
     }
 
 export default function NavBar() {
-    //
     const responseDataDEV: ResponseInterface = {
     responseExampleValue: "Example"
     };

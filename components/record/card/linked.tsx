@@ -93,7 +93,7 @@ export default function CardLinked({ tableid, recordid }: PropsInterface) {
                 >
                   <div className="w-full">
                     {table.rowsCount > 0 && (
-                      <span className="float-start bg-primary text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">{table.rowsCount}</span>
+                      <span className="float-start bg-red-400 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">{table.rowsCount}</span>
                     )}
                     {table.rowsCount == 0 && (
                       <span className="float-start text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded"></span>
