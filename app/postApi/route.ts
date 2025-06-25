@@ -102,7 +102,7 @@ export async function POST(request: Request) {
     case 'get_form_data': djangoUrl = '/commonapp/get_form_data/'; break;
     case 'get_card_active_tab': djangoUrl = '/commonapp/get_card_active_tab/'; break;
     case 'logError': djangoUrl = '/commonapp/logError/'; break;
-    case 'sign_timesgheet': djangoUrl = '/commonapp/sign_timesheet/'; break;
+    case 'sign_timesheet': djangoUrl = '/commonapp/sign_timesheet/'; break;
     
     
     default:

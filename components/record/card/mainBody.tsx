@@ -4,6 +4,7 @@ import { CircleX, Trash2 } from 'lucide-react';
 import CardTabs from './tabs';
 import { toast } from 'sonner';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
+import Firma from './firma';
 
 interface PropsInterface {
   tableid: string;
@@ -19,6 +20,8 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
   const { removeCard, refreshTable, setRefreshTable } = useRecordsStore();
   const [animationClass, setAnimationClass] = useState('animate-mobile-slide-in'); 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showSignatureModal, setShowSignatureModal] = useState(false);
+
 
   const getOffset = () => {
     const baseOffset = window.innerWidth < 768 ? 10 : 20; 
@@ -91,34 +94,71 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
           </div>
 
           <div className="flex items-center gap-2">
-                <div className="relative">
-                  <button 
-                    className="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 
-                              font-medium rounded-md text-xs px-3 py-1.5 text-center inline-flex items-center 
-                              dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" 
-                    type="button" 
-                    onClick={() => setShowDropdown(!showDropdown)}
-                  >
-                    Funzioni
-                    <svg className="w-2 h-2 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-                    </svg>
-                  </button>  
-                </div>
+            <div className="relative">
+              <button 
+                className="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 
+                          font-medium rounded-md text-xs px-3 py-1.5 text-center inline-flex items-center 
+                          dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" 
+                type="button" 
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                Funzioni
+                <svg className="w-2 h-2 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                </svg>
+              </button>  
 
-                <button 
-                  className="p-1.5 rounded-full hover:bg-red-100 hover:scale-110 transition-all duration-100 ease-in-out" 
-                  onClick={handleTrashClick}
-                  title="Elimina"
-                >
-                  <Trash2 className="w-5 h-5 text-primary hover:text-red-500" />
-                </button>
+              {/* ▼ Dropdown */}
+              {showDropdown && (
+                <div className="absolute right-0 z-10 mt-2 w-32 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <ul className="py-1 text-sm text-gray-700">
+                    <li>
+                      <button
+                        className="block px-4 py-2 w-full text-left hover:bg-gray-100"
+                        onClick={() => {
+                          setShowDropdown(false);
+                          setShowSignatureModal(true);
+                        }}
+                      >
+                        Firma
+                    </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <button 
+              className="p-1.5 rounded-full hover:bg-red-100 hover:scale-110 transition-all duration-100 ease-in-out" 
+              onClick={handleTrashClick}
+              title="Elimina"
+            >
+              <Trash2 className="w-5 h-5 text-primary hover:text-red-500" />
+            </button>
           </div>
         </div>
       </div>
       <div className="h-full w-full">
         <CardTabs tableid={tableid} recordid={recordid} mastertableid={mastertableid} masterrecordid={masterrecordid}></CardTabs>
       </div>
+      {/* aggiunta */}
+      {showSignatureModal && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white w-full h-full max-h-screen overflow-auto relative rounded-none md:rounded-xl shadow-xl p-6">
+            {/* Pulsante chiusura */}
+            <button
+              className="absolute top-4 right-4 text-gray-600 hover:text-black text-xl"
+              onClick={() => setShowSignatureModal(false)}
+              title="Chiudi"
+            >
+              ✕
+            </button>
+
+            {/* Contenuto firma */}
+            <Firma />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
