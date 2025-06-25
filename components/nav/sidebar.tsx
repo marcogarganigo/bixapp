@@ -164,7 +164,7 @@ export default function Sidebar({  }: PropsInterface) {
                                                     <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${openDropdown === item.id ? '-rotate-180' : ''}`} />
                                                 </button>
 
-                                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openDropdown === item.id ? 'max-h-96' : 'max-h-0'}`}>
+                                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openDropdown === item.id ? '' : 'max-h-0'}`}>
                                                     <ul className="py-1 ml-6">
                                                         {item.subItems.map((subItem) => (
                                                             <li key={subItem.id} className='cursor-pointer'>
