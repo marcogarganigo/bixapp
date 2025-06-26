@@ -5,11 +5,26 @@ import { parseFormData } from '@/lib/parseFormData';
 import FormDataNode from 'form-data';
 import fs from 'fs';
 
+const corsOrigin = process.env.NEXT_PUBLIC_CORS_ORIGIN ?? '*';
+
  const config = {
   api: {
     bodyParser: false,
   },
 };
+
+// 🔧 AGGIUNTA CORS: handler per richieste OPTIONS
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': corsOrigin,
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Credentials': 'true',
+    },
+  });
+}
 
 export async function POST(request: Request) {
   const cookieStore = await cookies();
@@ -138,6 +153,8 @@ export async function POST(request: Request) {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': contentDisposition,
+        'Access-Control-Allow-Origin': corsOrigin, // 🔧 AGGIUNTA CORS
+        'Access-Control-Allow-Credentials': 'true', // 🔧 AGGIUNTA CORS
       },
     });
 
@@ -152,7 +169,13 @@ export async function POST(request: Request) {
     return nextResponse;
   } else {
     const parsedData = JSON.parse(Buffer.from(response.data).toString('utf-8'));
-    const nextResponse = NextResponse.json(parsedData, { status: 200 });
+    const nextResponse = NextResponse.json(parsedData, {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': corsOrigin, // 🔧 AGGIUNTA CORS
+          'Access-Control-Allow-Credentials': 'true', // 🔧 AGGIUNTA CORS
+        },
+      });
 
     if (Array.isArray(setCookieHeader)) {
       setCookieHeader.forEach((cookieValue) => {

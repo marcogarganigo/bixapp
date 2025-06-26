@@ -14,6 +14,7 @@ const componentsMap: Record<string, React.ComponentType<any>> = {
     genericComponent: dynamic(() => import('@/components/genericComponent')),
     cardTabs: dynamic(() => import('@/components/record/card/tabs')),
     cardFields: dynamic(() => import('@/components/record/card/fields')),
+    recordTabs: dynamic(() => import('@/components/recordTabs')),
 };
 
 export default function DynamicComponentPage({ params }: { params: Promise<{ componentName: string }> }) {
