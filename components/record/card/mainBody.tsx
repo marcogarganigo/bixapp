@@ -99,7 +99,7 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
                 className="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 
                           font-medium rounded-md text-xs px-3 py-1.5 text-center inline-flex items-center 
                           dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" 
-                type="button" 
+                type="button"
                 onClick={() => setShowDropdown(!showDropdown)}
               >
                 Funzioni
@@ -112,17 +112,19 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
               {showDropdown && (
                 <div className="absolute right-0 z-10 mt-2 w-32 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <ul className="py-1 text-sm text-gray-700">
-                    <li>
-                      <button
-                        className="block px-4 py-2 w-full text-left hover:bg-gray-100"
-                        onClick={() => {
-                          setShowDropdown(false);
-                          setShowSignatureModal(true);
-                        }}
-                      >
-                        Firma
-                    </button>
-                    </li>
+                    {tableid === 'timesheet' && (
+                      <li>
+                        <button
+                          className="block px-4 py-2 w-full text-left hover:bg-gray-100"
+                          onClick={() => {
+                            setShowDropdown(false);
+                            setShowSignatureModal(true);
+                          }}
+                        >
+                          Firma
+                        </button>
+                      </li>
+                    )}
                   </ul>
                 </div>
               )}
@@ -155,7 +157,7 @@ export default function RecordCard({ tableid, recordid, mastertableid, masterrec
             </button>
 
             {/* Contenuto firma */}
-            <Firma />
+            <Firma recordid={recordid} />
           </div>
         </div>
       )}

@@ -2,7 +2,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import axiosInstanceClient from '@/utils/axiosInstanceClient';
 
-function Firma() {
+interface PropsInterface {
+  recordid: string;
+}
+
+function Firma({ recordid }: PropsInterface) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
     const [drawing, setDrawing] = useState(false);
@@ -97,29 +101,18 @@ function Firma() {
                 '/postApi',
                 {
                     apiRoute: "sign_timesheet",
-                    image: dataURL
+                    recordid: recordid,
+                    image: dataURL,
                 },
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
                         'Content-Type': 'application/json',
                     },
+                    responseType: 'blob',
                 }
             );
 
-            toast.success('Firma salvata con successo');
-
-            // 2. Scarica il file PDF dalla stessa path o da un endpoint specifico
-            const response = await axiosInstanceClient.post('/postApi', {
-                apiRoute: 'sign_timesheet',
-                image: dataURL,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json',
-                },
-                responseType: 'blob', // 👈 riceviamo un PDF
-            });
 
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             const link = document.createElement('a');
