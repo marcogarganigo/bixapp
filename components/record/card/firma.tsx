@@ -92,8 +92,8 @@ function Firma() {
         const dataURL = canvas.toDataURL('image/png');
 
         try {
-            // POST per salvare immagine (modifica apiRoute e payload come serve)
-            const response = await axiosInstanceClient.post(
+            // 1. Salva la firma
+            await axiosInstanceClient.post(
                 '/postApi',
                 {
                     apiRoute: "sign_timesheet",
@@ -108,11 +108,33 @@ function Firma() {
             );
 
             toast.success('Firma salvata con successo');
+
+            // 2. Scarica il file PDF dalla stessa path o da un endpoint specifico
+            const response = await axiosInstanceClient.post('/postApi', {
+                apiRoute: 'sign_timesheet',
+                image: dataURL,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+                responseType: 'blob', // 👈 riceviamo un PDF
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'documento_firmato.pdf');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
         } catch (error: any) {
             console.error('Errore durante il salvataggio o il download:', error);
             toast.error('Errore durante il salvataggio o il download');
         }
     };
+
 
     const clearCanvas = () => {
         const ctx = contextRef.current;
