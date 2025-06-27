@@ -86,47 +86,47 @@ function Firma({ recordid }: PropsInterface) {
         setDrawing(false);
     };
 
-    const saveServerImage = async () => {
-        const canvas = canvasRef.current;
-        if (!canvas) {
-            toast.error('Canvas non disponibile');
-            return;
-        }
+const saveServerImage = async () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+        toast.error('Canvas non disponibile');
+        return;
+    }
 
-        const dataURL = canvas.toDataURL('image/png');
+    const dataURL = canvas.toDataURL('image/png');
 
-        try {
-            // 1. Salva la firma
-            await axiosInstanceClient.post(
-                '/postApi',
-                {
-                    apiRoute: "sign_timesheet",
-                    recordid: recordid,
-                    image: dataURL,
+    try {
+        const response = await axiosInstanceClient.post(
+            '/postApi',
+            {
+                apiRoute: "sign_timesheet",
+                recordid: recordid,
+                image: dataURL,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
                 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                        'Content-Type': 'application/json',
-                    },
-                    responseType: 'blob',
-                }
-            );
+                responseType: 'blob',
+            }
+        );
 
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'timesheet_' + recordid + '.pdf');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
 
-            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'documento_firmato.pdf');
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
+    } catch (error: any) {
+        console.error('Errore durante il salvataggio o il download:', error);
+        toast.error('Errore durante il salvataggio o il download');
+    }
+};
 
-        } catch (error: any) {
-            console.error('Errore durante il salvataggio o il download:', error);
-            toast.error('Errore durante il salvataggio o il download');
-        }
-    };
 
 
     const clearCanvas = () => {
