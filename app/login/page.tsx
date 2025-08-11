@@ -6,6 +6,7 @@ import { toast, Toaster } from 'sonner';
 import Image from 'next/image';
 import { loginUserApi } from '@/utils/auth';
 import LoadingComp from '@/components/loading';
+import axiosInstanceClient from '@/utils/axiosInstanceClient';
 
 export default function Login() {
   const [username, setUsername] = useState<string>('');
@@ -13,9 +14,24 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const getCsrfToken = async () => {
+    const payload = {
+      apiRoute: 'getCsrf',
+    }; // Define payload as an empty object or with required data
+    const response = await axiosInstanceClient.post('/postApi/', payload, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: false,
+    });
+    const data = await response.data;
+    return data.csrftoken;
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    const csrfToken = await getCsrfToken();
     const result = await loginUserApi(username, password);
     if (result.success) {
       router.push('/home');
