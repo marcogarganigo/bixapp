@@ -23,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="it">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap"
           rel="stylesheet"
