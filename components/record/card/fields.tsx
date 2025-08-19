@@ -314,7 +314,7 @@ export default function CardFields({ tableid,recordid,mastertableid,masterrecord
                                                 valuecode={typeof field.value === 'object' ? field.value : undefined}
                                                 onChange={(value: string) => handleInputChange(field.fieldid, value)}
                                                 tableid={tableid}
-                                                linkedmaster_tableid={field.linked_mastertable}
+                                                linkedmaster_tableid={field.linked_mastertable?.[0]}
                                                 linkedmaster_recordid={initialValue}
                                                 fieldid={field.fieldid}
                                                 formValues={currentValues}  

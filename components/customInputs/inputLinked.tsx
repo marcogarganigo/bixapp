@@ -35,7 +35,7 @@ const fetchLinkedItems = async (searchTerm: string, linkedmaster_tableid: string
   };
   const res = await axiosInstanceClient.post('/postApi/', payload, {
     headers: {
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     withCredentials: true,
   });
